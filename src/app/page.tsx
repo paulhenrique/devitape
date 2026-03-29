@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getLatestEvent } from "@/lib/events";
 import { Calendar, MapPin, ArrowRight, MessageCircle } from "lucide-react";
+import { WhatsappIcon } from "@/components/Icons";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -57,7 +58,7 @@ export default async function Home() {
             <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8 rounded-full h-14 text-lg font-semibold group" asChild>
               <Link href="https://chat.whatsapp.com/exemplo" target="_blank">
                 Entrar na Comunidade
-                <MessageCircle className="ml-2 h-5 w-5" />
+                <WhatsappIcon className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5 px-8 rounded-full h-14 text-lg" asChild>

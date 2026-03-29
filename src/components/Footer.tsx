@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { MessageCircle, Camera, Link2, CodeXml } from 'lucide-react';
+import { InstagramIcon, LinkedInIcon, GithubIcon, WhatsappIcon } from './Icons';
 
 export default function Footer() {
   return (
@@ -26,16 +27,16 @@ export default function Footer() {
             <h4 className="font-bold mb-4 text-white">Social</h4>
             <div className="flex space-x-4">
               <Link href="https://instagram.com/devitape" target="_blank" className="text-gray-400 hover:text-white transition-colors" title="Instagram">
-                <Camera className="h-6 w-6" />
+                <InstagramIcon className="h-6 w-6" />
               </Link>
               <Link href="https://linkedin.com/company/devitape" target="_blank" className="text-gray-400 hover:text-white transition-colors" title="LinkedIn">
-                <Link2 className="h-6 w-6" />
+                <LinkedInIcon className="h-6 w-6" />
               </Link>
               <Link href="https://github.com/devitape" target="_blank" className="text-gray-400 hover:text-white transition-colors" title="GitHub">
-                <CodeXml className="h-6 w-6" />
+                <GithubIcon className="h-6 w-6" />
               </Link>
               <Link href="https://chat.whatsapp.com/exemplo" target="_blank" className="text-gray-400 hover:text-white transition-colors" title="WhatsApp">
-                <MessageCircle className="h-6 w-6" />
+                <WhatsappIcon className="h-6 w-6" />
               </Link>
             </div>
           </div>
