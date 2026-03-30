@@ -42,16 +42,16 @@ export default async function Home() {
         />
       )}
       {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden border-b border-white/5">
+      <section className="relative py-24 overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(124,58,237,0.1),transparent_70%)]" />
         <div className="container relative mx-auto px-6 md:px-10 lg:px-16 text-center">
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-transparent">
             A comunidade dev de <br className="hidden md:block" />
             <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
               Itapetininga e região
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
             Unindo desenvolvedores, engenheiros de software e entusiastas de tecnologia para compartilhar conhecimento e fortalecer o ecossistema local.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -61,7 +61,7 @@ export default async function Home() {
                 <WhatsappIcon className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5 px-8 rounded-full h-14 text-lg" asChild>
+            <Button size="lg" variant="outline" className="border-border hover:bg-accent px-8 rounded-full h-14 text-lg" asChild>
               <Link href="/eventos">
                 Ver Eventos
               </Link>
@@ -72,7 +72,7 @@ export default async function Home() {
 
       {/* Latest Event Section */}
       {latestEvent && (
-        <section className="py-20 bg-white/5 border-b border-white/5">
+        <section className="py-20 bg-muted/30 border-b border-border">
           <div className="container mx-auto px-6 md:px-10 lg:px-16">
             <div className="flex flex-col md:flex-row items-center justify-between mb-12">
               <h2 className="text-3xl font-bold mb-4 md:mb-0">Próximo Evento</h2>
@@ -83,7 +83,7 @@ export default async function Home() {
               </Button>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-12 items-center bg-black/40 border border-white/10 rounded-3xl overflow-hidden p-8 md:p-12 hover:border-purple-500/50 transition-all duration-300 group">
+            <div className="grid md:grid-cols-2 gap-12 items-center bg-card border border-border rounded-3xl overflow-hidden p-8 md:p-12 hover:border-purple-500/50 transition-all duration-300 group">
               <div className="relative aspect-video rounded-2xl overflow-hidden">
                 <img 
                   src={latestEvent.image} 
@@ -133,33 +133,33 @@ export default async function Home() {
                 Seja você um desenvolvedor sênior, um estudante começando agora ou um entusiasta de engenharia de software, aqui é o seu lugar.
               </p>
               <div className="grid grid-cols-2 gap-6">
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-                  <div className="text-2xl font-bold text-white mb-1">+100</div>
-                  <div className="text-sm text-gray-500 uppercase tracking-wider font-semibold">Membros</div>
+                <div className="p-4 rounded-2xl bg-muted/50 border border-border">
+                  <div className="text-2xl font-bold text-foreground mb-1">+100</div>
+                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Membros</div>
                 </div>
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-                  <div className="text-2xl font-bold text-white mb-1">Meetups</div>
-                  <div className="text-sm text-gray-500 uppercase tracking-wider font-semibold">Frequentes</div>
+                <div className="p-4 rounded-2xl bg-muted/50 border border-border">
+                  <div className="text-2xl font-bold text-foreground mb-1">Meetups</div>
+                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Frequentes</div>
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-3xl p-8 border border-white/10">
+            <div className="bg-gradient-to-br from-purple-900/10 to-blue-900/10 rounded-3xl p-8 border border-border">
               <h3 className="text-xl font-bold mb-6 flex items-center">
-                <span className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center mr-3 text-sm">✓</span>
+                <span className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center mr-3 text-sm text-white">✓</span>
                 Nossos Pilares
               </h3>
               <ul className="space-y-6">
                 <li className="flex flex-col">
-                  <span className="font-bold text-white mb-1">Networking Local</span>
-                  <span className="text-gray-400 text-sm">Conecte-se com profissionais que moram e trabalham perto de você.</span>
+                  <span className="font-bold text-foreground mb-1">Networking Local</span>
+                  <span className="text-muted-foreground text-sm">Conecte-se com profissionais que moram e trabalham perto de você.</span>
                 </li>
                 <li className="flex flex-col">
-                  <span className="font-bold text-white mb-1">Compartilhamento de Conhecimento</span>
-                  <span className="text-gray-400 text-sm">Palestras, workshops e discussões sobre tendências de mercado e engenharia.</span>
+                  <span className="font-bold text-foreground mb-1">Compartilhamento de Conhecimento</span>
+                  <span className="text-muted-foreground text-sm">Palestras, workshops e discussões sobre tendências de mercado e engenharia.</span>
                 </li>
                 <li className="flex flex-col">
-                  <span className="font-bold text-white mb-1">Fortalecimento do Ecossistema</span>
-                  <span className="text-gray-400 text-sm">Aproximar empresas locais e talentos, fomentando inovação em Itapetininga.</span>
+                  <span className="font-bold text-foreground mb-1">Fortalecimento do Ecossistema</span>
+                  <span className="text-muted-foreground text-sm">Aproximar empresas locais e talentos, fomentando inovação em Itapetininga.</span>
                 </li>
               </ul>
             </div>
