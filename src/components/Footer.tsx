@@ -12,7 +12,7 @@ export default function Footer() {
               devitape
             </span>
             <p className="text-gray-400 max-w-sm">
-              A maior comunidade de desenvolvedores de Itapetininga e região. Unindo talentos, compartilhando conhecimento e fortalecendo o ecossistema tech local.
+              Conectando talentos, compartilhando conhecimento e fortalecendo o ecossistema de tecnologia em Itapetininga e região.
             </p>
           </div>
           <div>

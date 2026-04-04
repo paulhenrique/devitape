@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://devitape.com.br"),
   title: "devitape | Comunidade Tech de Itapetininga e Região",
-  description: "A maior comunidade de desenvolvedores de Itapetininga/SP. Encontros, networking, eventos e compartilhamento de conhecimento sobre tecnologia e engenharia de software.",
+  description: "A comunidade de tecnologia de Itapetininga e região. Encontros, networking, eventos e compartilhamento de conhecimento sobre engenharia de software.",
   keywords: ["devitape", "Itapetininga", "comunidade dev", "desenvolvedores", "tecnologia", "engenharia de software", "software engineering", "meetup", "programação"],
   openGraph: {
     title: "devitape | Comunidade Tech de Itapetininga",

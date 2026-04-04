@@ -82,11 +82,11 @@ export default async function Home() {
                 </Link>
               </Button>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-12 items-center bg-card border border-border rounded-3xl overflow-hidden p-8 md:p-12 hover:border-purple-500/50 transition-all duration-300 group">
               <div className="relative aspect-video rounded-2xl overflow-hidden">
-                <img 
-                  src={latestEvent.image} 
+                <img
+                  src={latestEvent.image}
                   alt={latestEvent.title}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                 />
@@ -127,19 +127,19 @@ export default async function Home() {
             <div>
               <h2 className="text-4xl font-bold mb-6 tracking-tight">O que é o <span className="text-purple-400">devitape</span>?</h2>
               <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                Nascemos da vontade de conectar os talentos tech de Itapetininga e região. Acreditamos que o compartilhamento de experiências e o networking local são fundamentais para o crescimento profissional de cada membro.
+                Nascemos para conectar os talentos de tecnologia de Itapetininga e região. Acreditamos que o compartilhamento de experiências e o networking presencial são os motores para o crescimento profissional de cada membro.
               </p>
               <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                Seja você um desenvolvedor sênior, um estudante começando agora ou um entusiasta de engenharia de software, aqui é o seu lugar.
+                Estamos construindo essa jornada juntos. Seja você um desenvolvedor experiente, estudante ou entusiasta, o devitape é o seu espaço para aprender, ensinar e se conectar.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="p-4 rounded-2xl bg-muted/50 border border-border">
-                  <div className="text-2xl font-bold text-foreground mb-1">+100</div>
-                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Membros</div>
+                  <div className="text-2xl font-bold text-foreground mb-1">Networking</div>
+                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Genuíno e Local</div>
                 </div>
                 <div className="p-4 rounded-2xl bg-muted/50 border border-border">
-                  <div className="text-2xl font-bold text-foreground mb-1">Meetups</div>
-                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Frequentes</div>
+                  <div className="text-2xl font-bold text-foreground mb-1">Crescimento</div>
+                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Colaborativo</div>
                 </div>
               </div>
             </div>
