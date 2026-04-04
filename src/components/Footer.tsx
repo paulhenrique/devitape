@@ -20,13 +20,13 @@ export default function Footer() {
             <ul className="space-y-2 text-muted-foreground">
               <li><Link href="/" className="hover:text-purple-400 transition-colors">Home</Link></li>
               <li><Link href="/eventos" className="hover:text-purple-400 transition-colors">Eventos</Link></li>
-              <li><Link href="https://chat.whatsapp.com/exemplo" target="_blank" className="hover:text-purple-400 transition-colors">Comunidade</Link></li>
+              <li><Link href="https://bit.ly/form-devitape" target="_blank" className="hover:text-purple-400 transition-colors">Comunidade</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold mb-4 text-foreground">Social</h4>
             <div className="flex space-x-4">
-              <Link href="https://instagram.com/devitape" target="_blank" className="text-muted-foreground hover:text-foreground transition-colors" title="Instagram">
+              <Link href="https://instagram.com/dev.itape" target="_blank" className="text-muted-foreground hover:text-foreground transition-colors" title="Instagram">
                 <InstagramIcon className="h-6 w-6" />
               </Link>
               <Link href="https://linkedin.com/company/devitape" target="_blank" className="text-muted-foreground hover:text-foreground transition-colors" title="LinkedIn">
@@ -35,7 +35,7 @@ export default function Footer() {
               <Link href="https://github.com/devitape" target="_blank" className="text-muted-foreground hover:text-foreground transition-colors" title="GitHub">
                 <GithubIcon className="h-6 w-6" />
               </Link>
-              <Link href="https://chat.whatsapp.com/exemplo" target="_blank" className="text-muted-foreground hover:text-foreground transition-colors" title="WhatsApp">
+              <Link href="https://bit.ly/form-devitape" target="_blank" className="text-muted-foreground hover:text-foreground transition-colors" title="WhatsApp">
                 <WhatsappIcon className="h-6 w-6" />
               </Link>
             </div>

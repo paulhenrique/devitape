@@ -1,9 +1,9 @@
 ---
 title: "1º Meetup Devitape"
-date: "2024-05-20T19:00:00Z"
-location: "Itapetininga - Hub Inovação"
-externalLink: "https://www.sympla.com.br/evento-exemplo"
-description: "Nosso primeiro encontro oficial para networking e palestras sobre o mercado local."
+date: "2026-05-23T09:00:00Z"
+location: "IFSP Campus Itapetininga"
+externalLink: "https://bit.ly/form-devitape"
+description: "Nosso primeiro encontro oficial para networking e palestras! Início às 9h no IFSP Campus Itapetininga."
 image: "https://psiueducacao.com/wp-content/uploads/2018/08/meetup-o-que-e-e-como-utilizar-na-sua-estrategia-de-comunicacao.jpeg"
 status: "published"
 ---

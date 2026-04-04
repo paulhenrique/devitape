@@ -56,7 +56,7 @@ export default async function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8 rounded-full h-14 text-lg font-semibold group" asChild>
-              <Link href="https://chat.whatsapp.com/exemplo" target="_blank">
+              <Link href="https://bit.ly/form-devitape" target="_blank">
                 Entrar na Comunidade
                 <WhatsappIcon className="ml-2 h-5 w-5" />
               </Link>

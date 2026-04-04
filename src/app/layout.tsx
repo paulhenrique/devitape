@@ -57,7 +57,7 @@ export default function RootLayout({
               "url": "https://devitape.com.br",
               "logo": "https://devitape.com.br/logo.png",
               "sameAs": [
-                "https://instagram.com/devitape",
+                "https://instagram.com/dev.itape",
                 "https://linkedin.com/company/devitape",
                 "https://github.com/devitape"
               ],
