@@ -8,9 +8,12 @@ export default function Footer() {
       <div className="container mx-auto px-6 md:px-10 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div className="md:col-span-2">
-            <span className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent mb-4 block">
-              devitape
-            </span>
+            <div className="flex items-center space-x-3 mb-4">
+              <img src="/logo.png" alt="devitape logo" className="h-16 w-auto" />
+              <span className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+                devitape
+              </span>
+            </div>
             <p className="text-gray-400 max-w-sm">
               Conectando talentos, compartilhando conhecimento e fortalecendo o ecossistema de tecnologia em Itapetininga e região.
             </p>

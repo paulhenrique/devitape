@@ -8,7 +8,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/50 backdrop-blur-md">
       <div className="container mx-auto px-6 md:px-10 lg:px-16 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-3">
+          <img src="/logo.png" alt="devitape logo" className="h-12 w-auto" />
           <span className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
             devitape
           </span>
