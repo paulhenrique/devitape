@@ -132,14 +132,14 @@ export default async function Home() {
               <p className="text-gray-400 text-lg mb-8 leading-relaxed">
                 Estamos construindo essa jornada juntos. Seja você um desenvolvedor experiente, estudante ou entusiasta, o devitape é o seu espaço para aprender, ensinar e se conectar.
               </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="p-4 rounded-2xl bg-muted/50 border border-border">
-                  <div className="text-2xl font-bold text-foreground mb-1">Networking</div>
-                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Genuíno e Local</div>
+              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-6">
+                <div className="p-4 rounded-2xl bg-muted/50 border border-border min-w-0">
+                  <div className="text-xl sm:text-2xl font-bold text-foreground mb-1 break-words">Networking</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider font-semibold break-words">Genuíno e Local</div>
                 </div>
-                <div className="p-4 rounded-2xl bg-muted/50 border border-border">
-                  <div className="text-2xl font-bold text-foreground mb-1">Crescimento</div>
-                  <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Colaborativo</div>
+                <div className="p-4 rounded-2xl bg-muted/50 border border-border min-w-0">
+                  <div className="text-xl sm:text-2xl font-bold text-foreground mb-1 break-words">Crescimento</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider font-semibold break-words">Colaborativo</div>
                 </div>
               </div>
             </div>
