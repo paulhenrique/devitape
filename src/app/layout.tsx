@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   title: "devitape | Comunidade Tech de Itapetininga e Região",
   description: "A comunidade de tecnologia de Itapetininga e região. Encontros, networking, eventos e compartilhamento de conhecimento sobre engenharia de software.",
   keywords: ["devitape", "Itapetininga", "comunidade dev", "desenvolvedores", "tecnologia", "engenharia de software", "software engineering", "meetup", "programação"],
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
   openGraph: {
     title: "devitape | Comunidade Tech de Itapetininga",
     description: "Unindo desenvolvedores e entusiastas de tecnologia em Itapetininga e região.",
