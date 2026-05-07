@@ -1,10 +1,10 @@
 ---
-title: "1º Meetup Devitape"
+title: "Devitape WKND - Aula Magna do Curso de TSI"
 date: "2026-05-23T09:00:00Z"
 location: "IFSP Campus Itapetininga"
-externalLink: "https://bit.ly/form-devitape"
+externalLink: "https://www.sympla.com.br/evento/devitape-wknd/3416021?share_id=copiarlink"
 description: "Nosso primeiro encontro oficial para networking e palestras! Início às 9h no IFSP Campus Itapetininga."
-image: "https://psiueducacao.com/wp-content/uploads/2018/08/meetup-o-que-e-e-como-utilizar-na-sua-estrategia-de-comunicacao.jpeg"
+image: "/devitapewknd2.png"
 status: "published"
 ---
 Estamos muito empolgados em anunciar o primeiro meetup da comunidade Devitape! 

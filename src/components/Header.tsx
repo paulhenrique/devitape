@@ -17,7 +17,7 @@ export default function Header() {
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
           <Link href="/" className="text-foreground hover:text-purple-400 transition-colors">Home</Link>
           <Link href="/eventos" className="text-muted-foreground hover:text-purple-400 transition-colors">Eventos</Link>
-          <Link href="https://bit.ly/form-devitape" target="_blank" className="text-gray-400 hover:text-purple-400 transition-colors flex items-center">
+          <Link href="https://www.sympla.com.br/evento/devitape-wknd/3416021?share_id=copiarlink" target="_blank" className="text-gray-400 hover:text-purple-400 transition-colors flex items-center">
             <WhatsappIcon className="h-4 w-4 mr-1 text-[#25D366]" />
             WhatsApp
           </Link>
@@ -35,7 +35,7 @@ export default function Header() {
           <div className="h-6 w-px bg-border mx-2" />
           <ThemeToggle />
           <Button variant="outline" className="hidden md:flex border-purple-500/50 hover:bg-purple-500/10 text-purple-400" asChild>
-            <Link href="https://bit.ly/form-devitape" target="_blank">
+            <Link href="https://www.sympla.com.br/evento/devitape-wknd/3416021?share_id=copiarlink" target="_blank">
               Fazer parte
             </Link>
           </Button>
