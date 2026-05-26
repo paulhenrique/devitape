@@ -281,7 +281,7 @@ const slides = [
           className="bg-white p-8 rounded-[2rem] shadow-2xl shadow-green-500/20 mb-12"
         >
           <QRCode 
-            value="https://chat.whatsapp.com/LJI2K0j575ULrs385mrPSc" 
+            value="https://devitape.com.br/go/whatsapp" 
             size={320}
             className="w-64 h-64 md:w-80 md:h-80"
           />
@@ -294,7 +294,7 @@ const slides = [
           className="bg-white/5 border border-white/10 px-8 py-4 rounded-full"
         >
           <p className="text-xl md:text-2xl font-mono text-gray-400">
-            chat.whatsapp.com/LJI2K0j575ULrs385mrPSc
+            devitape.com.br/go/whatsapp
           </p>
         </motion.div>
       </div>
