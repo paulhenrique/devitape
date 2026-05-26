@@ -3,15 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { LinkedInIcon } from "./Icons";
-import { Mic2 } from "lucide-react";
+import { Mic2, FileText } from "lucide-react";
 
 interface SpeakerCardProps {
   name: string;
   linkedin: string;
   talkTitle?: string;
+  presentationLink?: string;
 }
 
-export function SpeakerCard({ name, linkedin, talkTitle }: SpeakerCardProps) {
+export function SpeakerCard({ name, linkedin, talkTitle, presentationLink }: SpeakerCardProps) {
   const username = linkedin.split("/in/")[1]?.split(/[?#/]/)[0] || "";
   const avatarUrl = `https://unavatar.io/linkedin/${username}?fallback=false`;
   const [hasError, setHasError] = useState(false);
@@ -68,9 +69,20 @@ export function SpeakerCard({ name, linkedin, talkTitle }: SpeakerCardProps) {
         <div className="w-full mt-auto bg-muted/50 rounded-2xl p-5 border border-border/50 relative overflow-hidden group/talk">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover/talk:opacity-100 transition-opacity" />
           <span className="text-[10px] font-bold text-purple-400 uppercase tracking-[0.2em] block mb-2 relative z-10">PALESTRA</span>
-          <p className="font-semibold text-foreground leading-tight italic relative z-10 text-lg">
+          <p className="font-semibold text-foreground leading-tight italic relative z-10 text-lg mb-4">
             &quot;{talkTitle}&quot;
           </p>
+
+          {presentationLink && (
+            <Link 
+              href={presentationLink} 
+              target="_blank"
+              className="relative z-10 inline-flex items-center gap-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-full transition-colors w-full justify-center group/btn"
+            >
+              <FileText className="h-3 w-3 transition-transform group-hover/btn:scale-110" />
+              SLIDES DA PALESTRA
+            </Link>
+          )}
         </div>
       )}
     </div>

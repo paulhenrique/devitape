@@ -7,6 +7,16 @@ description: "Será que a qualidade de código ainda é relevante nos dias de ho
 image: "https://images.sympla.com.br/6a012be089a71-lg.png"
 status: "published"
 volunteers:
+  - name: "Vinicius Zevarex"
+    linkedin: "https://www.linkedin.com/in/vinicius-zevarex/"
+    isSpeaker: true
+    talkTitle: ""
+    presentationLink: ""
+  - name: "Paulo Candido"
+    linkedin: "https://www.linkedin.com/in/paulhenriquev"
+    isSpeaker: false
+    talkTitle: ""
+    presentationLink: ""
 ---
 
 Nesta edição do DevItape Live, vamos abordar um tema fundamental para qualquer desenvolvedor: **Qualidade de Código**.

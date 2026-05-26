@@ -143,7 +143,9 @@ export default function EventPageClient({ event }: EventPageClientProps) {
               <Mic2 className="h-4 w-4" />
               Palestrantes
             </div>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Quem passou pelo palco</h2>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
+              {isPast ? "Quem passou pelo palco" : "Quem passará pelo palco"}
+            </h2>
           </motion.div>
           
           <motion.div 
@@ -159,6 +161,7 @@ export default function EventPageClient({ event }: EventPageClientProps) {
                   name={speaker.name}
                   linkedin={speaker.linkedin}
                   talkTitle={speaker.talkTitle}
+                  presentationLink={speaker.presentationLink}
                 />
               </motion.div>
             ))}

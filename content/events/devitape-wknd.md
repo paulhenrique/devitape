@@ -8,22 +8,26 @@ image: "/devitapewknd2.png"
 status: "published"
 photosLink: "/go/fotos-devitape-wknd"
 volunteers:
-  - name: "Paulo Henrique Vieira"
+  - name: " Paulo Henrique Vieira"
     isSpeaker: true
     linkedin: "https://www.linkedin.com/in/paulhenriquev"
     talkTitle: "O Futuro do Ecossistema Tech em Itapetininga"
+    presentationLink: "https://www.devitape.com.br/abertura"
   - name: "Maylon Macedo"
     isSpeaker: true
     linkedin: "https://www.linkedin.com/in/maylonmacedo/"
     talkTitle: "Por Dentro da Caixa Preta: Se a Inteligência Artificial errar, quem conserta?"
+    presentationLink: ""
   - name: "Fábio Baldin"
     isSpeaker: true
     linkedin: "https://www.linkedin.com/in/fabiobaldin"
     talkTitle: "Tecnologia: IA, pessoas, negócios e ecossistemas (Não Necessariamente Nessa Ordem. CAOS)"
+    presentationLink: "https://drive.google.com/file/d/1OhHqi0aQG-vwaYvGtgo97JkG4YtyVoCm/view?usp=sharing"
   - name: "Jean Meira"
     isSpeaker: true
     linkedin: "https://www.linkedin.com/in/jean-meira/"
     talkTitle: "O que a feira de profissões não me contou sobre trabalhar com tecnologia"
+    presentationLink: "https://drive.google.com/file/d/1FoPzzu-Zx_AftbJg2kbbflmiZrA2h7L9/view?usp=sharing"
   - name: "Laura Silva"
     linkedin: "https://www.linkedin.com/in/laura-silva-54416735a"
   - name: "Helber Cruz"

@@ -32,7 +32,12 @@ const normalizeLinkedin = (url: string) => {
 };
 
 export default async function TeamPage() {
-  const events = await getAllEvents();
+  const allEvents = await getAllEvents();
+  
+  // Filter events to only include those that have already happened or are happening today
+  const now = new Date();
+  const startOfTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  const events = allEvents.filter(event => new Date(event.date) < startOfTomorrow);
   
   const volunteersMap = new Map<string, VolunteerWithEvents>();
   const allEventsList: { name: string; slug: string }[] = [];

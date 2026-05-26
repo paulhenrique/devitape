@@ -11,10 +11,22 @@ volunteers:
     linkedin: "https://www.linkedin.com/in/paulhenriquev"
     isSpeaker: true
     talkTitle: "Do Figma para a Produção: IA Como Ferramenta Estratégica"
+    presentationLink: ""
   - name: "Fábio Baldin"
     isSpeaker: true
     linkedin: "https://www.linkedin.com/in/fabiobaldin"
     talkTitle: "Do Projeto para a API: IA Como Ferramenta Estratégica"
+    presentationLink: ""
+  - name: "Alexandre de Paula"
+    isSpeaker: true
+    linkedin: "https://www.linkedin.com/in/abpaula77/"
+    talkTitle: ""
+    presentationLink: ""
+  - name: "Orlando Saraiva Jr"
+    isSpeaker: true
+    linkedin: "https://www.linkedin.com/in/orlando-saraiva-j%C3%BAnior-83707022/"
+    talkTitle: ""
+    presentationLink: ""
 ---
 
 Prepare-se para o **Web Communities WKND**, um mega evento que vai reunir as principais comunidades de tecnologia da nossa região (**DevPira**, **DevItape**, **DevRioClaro** e **DevLimeira**) em um dia repleto de conteúdo de alto nível, IA e muito networking!
