@@ -6,6 +6,7 @@ externalLink: "https://www.sympla.com.br/evento-online/devitape-live-qualidade-d
 description: "Será que a qualidade de código ainda é relevante nos dias de hoje? Vamos discutir isso ao vivo com convidados especiais!"
 image: "https://images.sympla.com.br/6a012be089a71-lg.png"
 status: "published"
+volunteers:
 ---
 
 Nesta edição do DevItape Live, vamos abordar um tema fundamental para qualquer desenvolvedor: **Qualidade de Código**.

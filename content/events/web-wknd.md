@@ -6,6 +6,9 @@ externalLink: "https://www.sympla.com.br"
 description: "Uma imersão em tecnologia e IA unindo as principais comunidades web da região na Etec Boituva!"
 image: "/capa_sympla.png"
 status: "published"
+volunteers:
+  - name: " Paulo Candido"
+    linkedin: "https://www.linkedin.com/in/paulhenriquev"
 ---
 
 Prepare-se para o **Web Communities WKND**, um mega evento que vai reunir as principais comunidades de tecnologia da nossa região (**DevPira**, **DevItape**, **DevRioClaro** e **DevLimeira**) em um dia repleto de conteúdo de alto nível, IA e muito networking!

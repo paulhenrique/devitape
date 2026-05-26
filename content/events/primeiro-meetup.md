@@ -6,12 +6,31 @@ externalLink: "https://www.sympla.com.br/evento/devitape-wknd/3416021?share_id=c
 description: "Nosso primeiro encontro oficial para networking e palestras! Início às 9h no IFSP Campus Itapetininga."
 image: "/devitapewknd2.png"
 status: "published"
+volunteers:
+  - name: " Paulo Candido"
+    linkedin: "https://www.linkedin.com/in/paulhenriquev"
+  - name: "Laura Silva"
+    linkedin: "https://www.linkedin.com/in/laura-silva-54416735a"
+  - name: "Helber Cruz"
+    linkedin: "https://www.linkedin.com/in/helbercruz-dev/"
+  - name: "Isaac Barros"
+    linkedin: "https://www.linkedin.com/in/isaac-seabra-de-barros-79a90a2b2/"
+  - name: "Maria Eduarda Souza"
+    linkedin: "https://www.linkedin.com/in/maria-eduarda-souza-667182358/"
+  - name: "Mariana Leite"
+    linkedin: "https://www.linkedin.com/in/mariana-alice/"
+  - name: "Larissa Santos"
+    linkedin: "https://www.linkedin.com/in/lsantos-ti/"
+  - name: "Wilton Ferraz Jr."
+    linkedin: "https://www.linkedin.com/in/wilton-m-f-jr/"
 ---
-Estamos muito empolgados em anunciar o primeiro meetup da comunidade Devitape! 
+
+Estamos muito empolgados em anunciar o primeiro meetup da comunidade Devitape!
 
 Venha participar de um momento único de networking, troca de experiências e palestras incríveis sobre o futuro da tecnologia em nossa região.
 
 **O que esperar:**
+
 - Palestras com especialistas locais
 - Networking com outros desenvolvedores
 - Coffee Break

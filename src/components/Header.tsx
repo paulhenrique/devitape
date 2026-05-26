@@ -16,6 +16,7 @@ export default function Header() {
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
           <Link href="/" className="text-foreground hover:text-purple-400 transition-colors">Home</Link>
           <Link href="/eventos" className="text-muted-foreground hover:text-purple-400 transition-colors">Eventos</Link>
+          <Link href="/equipe" className="text-muted-foreground hover:text-purple-400 transition-colors">Equipe</Link>
           <Link href="/go/c4p" target="_blank" className="text-muted-foreground hover:text-purple-400 transition-colors">Call for Papers</Link>
           <Link href="/go/whatsapp" target="_blank" className="text-gray-400 hover:text-purple-400 transition-colors flex items-center">
             <WhatsappIcon className="h-4 w-4 mr-1 text-[#25D366]" />

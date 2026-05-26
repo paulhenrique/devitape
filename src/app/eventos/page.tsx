@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllEvents } from "@/lib/events";
+import { EventMetadata } from "@/types/event";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Calendar, MapPin, ExternalLink } from "lucide-react";
@@ -60,7 +61,7 @@ export default async function EventsPage() {
   );
 }
 
-function EventCard({ event, isPast }: { event: any, isPast: boolean }) {
+function EventCard({ event, isPast }: { event: EventMetadata, isPast: boolean }) {
   return (
     <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-300 group flex flex-col h-full">
       <div className="relative aspect-video overflow-hidden">
