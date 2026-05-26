@@ -2,7 +2,7 @@
 title: "Web Communities WKND - Boituva"
 date: "2026-08-15T09:00:00-03:00"
 location: "Etec Boituva - Boituva/SP"
-externalLink: "https://www.sympla.com.br"
+externalLink: ""
 description: "Uma imersão em tecnologia e IA unindo as principais comunidades web da região na Etec Boituva!"
 image: "/capa_sympla.png"
 status: "published"
