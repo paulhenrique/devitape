@@ -50,6 +50,10 @@ export async function getLatestEvent(): Promise<EventMetadata | null> {
   const events = await getAllEvents();
   const now = new Date();
   
+  // First, check for a featured event that hasn't happened yet or is the newest
+  const featured = events.find(e => e.featured === true);
+  if (featured) return featured;
+
   // Find the next upcoming event
   const upcoming = events
     .filter(e => new Date(e.date) >= now)

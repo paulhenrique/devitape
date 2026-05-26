@@ -6,6 +6,7 @@ externalLink: "https://www.sympla.com.br"
 description: "Uma imersão em tecnologia e IA unindo as principais comunidades web da região na Etec Boituva!"
 image: "/capa_sympla.png"
 status: "published"
+featured: true
 volunteers:
   - name: " Paulo Candido"
     linkedin: "https://www.linkedin.com/in/paulhenriquev"
