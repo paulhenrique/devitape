@@ -1,6 +1,8 @@
 export interface Volunteer {
   name: string;
   linkedin: string;
+  isSpeaker?: boolean;
+  talkTitle?: string;
 }
 
 export interface EventMetadata {

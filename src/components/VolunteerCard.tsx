@@ -2,11 +2,18 @@
 
 import Link from "next/link";
 import { LinkedInIcon } from "./Icons";
+import { Mic2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface VolunteerWithEvents {
   name: string;
   linkedin: string;
-  events: { name: string; slug: string }[];
+  events: { 
+    name: string; 
+    slug: string; 
+    isSpeaker?: boolean; 
+    talkTitle?: string 
+  }[];
 }
 
 export function VolunteerCard({ volunteer }: { volunteer: VolunteerWithEvents }) {
@@ -16,10 +23,19 @@ export function VolunteerCard({ volunteer }: { volunteer: VolunteerWithEvents })
     ?.split(/[?#/]/)[0] || "";
     
   const avatarUrl = `https://unavatar.io/linkedin/${username}`;
+  const hasBeenSpeaker = volunteer.events.some(e => e.isSpeaker);
 
   return (
-    <div className="group flex flex-col items-center text-center">
+    <div className="group flex flex-col items-center text-center relative">
       <div className="relative mb-6">
+        {/* Speaker Badge */}
+        {hasBeenSpeaker && (
+          <div className="absolute -top-2 -right-2 z-10 bg-purple-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg flex items-center gap-1 border border-purple-400/50">
+            <Mic2 className="h-3 w-3" />
+            PALESTRANTE
+          </div>
+        )}
+        
         {/* Subtler gradient ring */}
         <div className="absolute -inset-1 bg-gradient-to-tr from-purple-500/40 to-blue-500/40 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm"></div>
         <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden border-2 border-border/50 bg-muted shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:border-purple-500/50">
@@ -40,13 +56,20 @@ export function VolunteerCard({ volunteer }: { volunteer: VolunteerWithEvents })
       
       <div className="flex flex-wrap justify-center gap-1.5 mb-4 max-w-[180px]">
         {volunteer.events.map((event) => (
-          <span 
-            key={event.slug} 
-            className="text-[9px] font-semibold uppercase tracking-tight text-muted-foreground bg-secondary/50 border border-border/50 px-2 py-0.5 rounded-md backdrop-blur-sm"
-            title={event.name}
-          >
-            {event.name.split('-')[0].trim()}
-          </span>
+          <div key={event.slug} className="flex flex-col items-center gap-1">
+            <span 
+              className={cn(
+                "text-[9px] font-semibold uppercase tracking-tight px-2 py-0.5 rounded-md backdrop-blur-sm border",
+                event.isSpeaker 
+                  ? "bg-purple-500/10 border-purple-500/30 text-purple-400" 
+                  : "bg-secondary/50 border-border/50 text-muted-foreground"
+              )}
+              title={event.talkTitle ? `${event.name}: ${event.talkTitle}` : event.name}
+            >
+              {event.name.split('-')[0].trim()}
+              {event.isSpeaker && " 🎙️"}
+            </span>
+          </div>
         ))}
       </div>
       

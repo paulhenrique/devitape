@@ -9,7 +9,12 @@ export const metadata = {
 interface VolunteerWithEvents {
   name: string;
   linkedin: string;
-  events: { name: string; slug: string }[];
+  events: { 
+    name: string; 
+    slug: string;
+    isSpeaker?: boolean;
+    talkTitle?: string;
+  }[];
 }
 
 // Helper to normalize LinkedIn URLs for consistent mapping
@@ -45,12 +50,22 @@ export default async function TeamPage() {
         
         if (existing) {
           if (!existing.events.find(e => e.slug === event.slug)) {
-            existing.events.push({ name: event.title, slug: event.slug });
+            existing.events.push({ 
+              name: event.title, 
+              slug: event.slug,
+              isSpeaker: v.isSpeaker,
+              talkTitle: v.talkTitle
+            });
           }
         } else {
           volunteersMap.set(key, {
             ...v,
-            events: [{ name: event.title, slug: event.slug }]
+            events: [{ 
+              name: event.title, 
+              slug: event.slug,
+              isSpeaker: v.isSpeaker,
+              talkTitle: v.talkTitle
+            }]
           });
         }
       });
