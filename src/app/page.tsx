@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getLatestEvent } from "@/lib/events";
-import { Calendar, MapPin, ArrowRight, MessageCircle } from "lucide-react";
+import { Calendar, MapPin, ArrowRight, Mic } from "lucide-react";
 import { WhatsappIcon } from "@/components/Icons";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -119,6 +119,45 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* Call For Papers Section */}
+      <section className="py-24 relative overflow-hidden border-b border-border">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-blue-900/20 opacity-50" />
+        <div className="container relative mx-auto px-6 md:px-10 lg:px-16">
+          <div className="bg-card/50 backdrop-blur-sm border border-purple-500/30 rounded-[2.5rem] p-8 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="flex-1 text-center md:text-left">
+              <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-purple-500/10 mb-6 border border-purple-500/20">
+                <Mic className="h-8 w-8 text-purple-400" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                Quer palestrar no <span className="text-purple-400">devitape</span>?
+              </h2>
+              <p className="text-gray-400 text-lg md:text-xl mb-8 leading-relaxed max-w-2xl">
+                Nossa comunidade é feita de pessoas para pessoas. Se você tem algo legal para compartilhar, 
+                seja uma tecnologia, uma experiência ou um projeto, o palco é seu!
+              </p>
+              <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-10 rounded-full h-16 text-xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-purple-500/25" asChild>
+                <Link href="/go/c4p" target="_blank">
+                  Submeter minha palestra
+                </Link>
+              </Button>
+            </div>
+            <div className="flex-1 relative hidden lg:block">
+              <div className="absolute -inset-4 bg-purple-500/20 blur-3xl rounded-full" />
+              <div className="relative grid grid-cols-2 gap-4">
+                <div className="space-y-4 pt-8">
+                  <div className="h-32 rounded-3xl bg-gradient-to-br from-purple-500/20 to-transparent border border-white/10" />
+                  <div className="h-48 rounded-3xl bg-gradient-to-br from-blue-500/20 to-transparent border border-white/10" />
+                </div>
+                <div className="space-y-4">
+                  <div className="h-48 rounded-3xl bg-gradient-to-br from-purple-500/20 to-transparent border border-white/10" />
+                  <div className="h-32 rounded-3xl bg-gradient-to-br from-blue-500/20 to-transparent border border-white/10" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* About Section */}
       <section className="py-24 border-b border-white/5">
