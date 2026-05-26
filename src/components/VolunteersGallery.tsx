@@ -2,10 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { VolunteerCard } from "./VolunteerCard";
-import { Search, Check, ChevronsUpDown, X } from "lucide-react";
+import { Search, Check, ChevronsUpDown, X, Mic2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   Command,
   CommandEmpty,
@@ -23,7 +25,12 @@ import {
 interface VolunteerWithEvents {
   name: string;
   linkedin: string;
-  events: { name: string; slug: string }[];
+  events: { 
+    name: string; 
+    slug: string;
+    isSpeaker?: boolean;
+    talkTitle?: string;
+  }[];
 }
 
 interface VolunteersGalleryProps {
@@ -34,19 +41,22 @@ interface VolunteersGalleryProps {
 export function VolunteersGallery({ volunteers, allEvents }: VolunteersGalleryProps) {
   const [search, setSearch] = useState("");
   const [selectedEvent, setSelectedEvent] = useState<string>("all");
+  const [isSpeakersOnly, setIsSpeakersOnly] = useState(false);
   const [open, setOpen] = useState(false);
 
   const filteredVolunteers = useMemo(() => {
     return volunteers.filter((v) => {
       const matchesSearch = v.name.toLowerCase().includes(search.toLowerCase());
       const matchesEvent = selectedEvent === "all" || v.events.some((e) => e.slug === selectedEvent);
-      return matchesSearch && matchesEvent;
+      const matchesSpeaker = !isSpeakersOnly || v.events.some((e) => e.isSpeaker);
+      return matchesSearch && matchesEvent && matchesSpeaker;
     });
-  }, [volunteers, search, selectedEvent]);
+  }, [volunteers, search, selectedEvent, isSpeakersOnly]);
 
   const clearFilters = () => {
     setSearch("");
     setSelectedEvent("all");
+    setIsSpeakersOnly(false);
   };
 
   const selectedEventLabel = useMemo(() => {
@@ -57,27 +67,41 @@ export function VolunteersGallery({ volunteers, allEvents }: VolunteersGalleryPr
   return (
     <div className="space-y-12">
       {/* Filters Section */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-muted/20 p-6 rounded-2xl border border-border/40 backdrop-blur-sm">
-        <div className="relative w-full md:max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Buscar voluntário pelo nome..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background/50 border border-border/50 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-muted-foreground/60"
-          />
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
+      <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-muted/20 p-6 rounded-2xl border border-border/40 backdrop-blur-sm">
+        <div className="flex flex-col md:flex-row gap-4 w-full lg:max-w-3xl">
+          <div className="relative flex-grow">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Buscar pelo nome..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full bg-background/50 border border-border/50 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-muted-foreground/60"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center space-x-3 bg-background/40 border border-border/50 px-4 py-2 rounded-xl">
+            <Switch 
+              id="speakers-only" 
+              checked={isSpeakersOnly}
+              onCheckedChange={setIsSpeakersOnly}
+            />
+            <Label htmlFor="speakers-only" className="text-xs font-medium cursor-pointer flex items-center gap-1.5 whitespace-nowrap">
+              <Mic2 className="h-3.5 w-3.5 text-purple-400" />
+              Somente Palestrantes
+            </Label>
+          </div>
         </div>
 
-        <div className="w-full md:w-auto">
+        <div className="w-full lg:w-auto">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
