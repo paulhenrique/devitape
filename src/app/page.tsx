@@ -126,8 +126,11 @@ export default async function Home() {
                   {latestEvent.location}
                 </div>
                 <Button size="lg" className="bg-white text-black hover:bg-gray-200 px-8" asChild>
-                  <Link href={latestEvent.externalLink} target="_blank">
-                    Garantir minha vaga
+                  <Link 
+                    href={latestEvent.externalLink || `/eventos/${latestEvent.slug}`} 
+                    target={latestEvent.externalLink ? "_blank" : undefined}
+                  >
+                    {latestEvent.externalLink ? "Garantir minha vaga" : "Ver detalhes do evento"}
                   </Link>
                 </Button>
               </div>

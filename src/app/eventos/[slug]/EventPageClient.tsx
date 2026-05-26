@@ -76,16 +76,26 @@ export default function EventPageClient({ event }: EventPageClientProps) {
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg" 
-                className="bg-purple-600 hover:bg-purple-700 text-white text-lg h-14 px-8 rounded-xl shadow-lg shadow-purple-600/20 transition-all hover:scale-[1.02]"
-                asChild
-              >
-                <Link href={event.externalLink} target="_blank">
-                  {isPast ? "Ver no Sympla" : "Garantir minha vaga"}
-                  <ExternalLink className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
+              {event.externalLink ? (
+                <Button 
+                  size="lg" 
+                  className="bg-purple-600 hover:bg-purple-700 text-white text-lg h-14 px-8 rounded-xl shadow-lg shadow-purple-600/20 transition-all hover:scale-[1.02]"
+                  asChild
+                >
+                  <Link href={event.externalLink} target="_blank">
+                    {isPast ? "Ver no Sympla" : "Garantir minha vaga"}
+                    <ExternalLink className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              ) : (
+                <Button 
+                  size="lg" 
+                  disabled
+                  className="bg-muted text-muted-foreground text-lg h-14 px-8 rounded-xl cursor-not-allowed"
+                >
+                  {isPast ? "Inscrições Encerradas" : "Inscrições em breve"}
+                </Button>
+              )}
               
               {event.photosLink && (
                 <Button 
