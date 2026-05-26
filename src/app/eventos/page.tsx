@@ -90,12 +90,11 @@ function EventCard({ event, isPast }: { event: EventMetadata, isPast: boolean })
         <Button 
           variant={isPast ? "secondary" : "default"} 
           className={`w-full ${!isPast ? 'bg-purple-600 hover:bg-purple-700 text-white' : ''}`}
-          disabled={isPast}
           asChild
         >
-          <Link href={event.externalLink} target="_blank" className="flex items-center justify-center">
-            {isPast ? "Evento Finalizado" : "Ver detalhes / Inscrição"}
-            {!isPast && <ExternalLink className="ml-2 h-4 w-4" />}
+          <Link href={`/eventos/${event.slug}`} className="flex items-center justify-center">
+            {isPast ? "Ver detalhes do evento" : "Ver detalhes / Inscrição"}
+            <ExternalLink className="ml-2 h-4 w-4" />
           </Link>
         </Button>
       </div>

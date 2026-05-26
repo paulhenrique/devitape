@@ -15,6 +15,7 @@ export interface EventMetadata {
   status: 'published' | 'draft';
   slug: string;
   volunteers?: Volunteer[];
+  photosLink?: string;
 }
 
 export interface Event extends EventMetadata {
