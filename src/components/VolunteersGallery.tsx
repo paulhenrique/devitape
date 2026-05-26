@@ -2,7 +2,23 @@
 
 import { useState, useMemo } from "react";
 import { VolunteerCard } from "./VolunteerCard";
-import { Search, Filter, X } from "lucide-react";
+import { Search, Check, ChevronsUpDown, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface VolunteerWithEvents {
   name: string;
@@ -18,6 +34,7 @@ interface VolunteersGalleryProps {
 export function VolunteersGallery({ volunteers, allEvents }: VolunteersGalleryProps) {
   const [search, setSearch] = useState("");
   const [selectedEvent, setSelectedEvent] = useState<string>("all");
+  const [open, setOpen] = useState(false);
 
   const filteredVolunteers = useMemo(() => {
     return volunteers.filter((v) => {
@@ -32,10 +49,15 @@ export function VolunteersGallery({ volunteers, allEvents }: VolunteersGalleryPr
     setSelectedEvent("all");
   };
 
+  const selectedEventLabel = useMemo(() => {
+    if (selectedEvent === "all") return "Todos os Eventos";
+    return allEvents.find((e) => e.slug === selectedEvent)?.name || "Todos os Eventos";
+  }, [selectedEvent, allEvents]);
+
   return (
     <div className="space-y-12">
       {/* Filters Section */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-muted/30 p-4 rounded-2xl border border-border/50">
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-muted/20 p-6 rounded-2xl border border-border/40 backdrop-blur-sm">
         <div className="relative w-full md:max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
@@ -43,53 +65,120 @@ export function VolunteersGallery({ volunteers, allEvents }: VolunteersGalleryPr
             placeholder="Buscar voluntário pelo nome..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border/50 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+            className="w-full bg-background/50 border border-border/50 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-muted-foreground/60"
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
           )}
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <Filter className="h-4 w-4 text-muted-foreground hidden md:block" />
-          <select
-            value={selectedEvent}
-            onChange={(e) => setSelectedEvent(e.target.value)}
-            className="w-full md:w-64 bg-background border border-border/50 rounded-xl py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all appearance-none cursor-pointer"
-          >
-            <option value="all">Todos os Eventos</option>
-            {allEvents.map((event) => (
-              <option key={event.slug} value={event.slug}>
-                {event.name}
-              </option>
-            ))}
-          </select>
+        <div className="w-full md:w-auto">
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-full md:w-[300px] justify-between bg-background/50 border-border/50 rounded-xl hover:bg-background/80"
+              >
+                <span className="truncate">
+                  {selectedEventLabel}
+                </span>
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full md:w-[300px] p-0 rounded-xl border-border/50 shadow-2xl">
+              <Command className="bg-background">
+                <CommandInput placeholder="Filtrar por evento..." className="h-10" />
+                <CommandList>
+                  <CommandEmpty>Nenhum evento encontrado.</CommandEmpty>
+                  <CommandGroup>
+                    <CommandItem
+                      value="all"
+                      onSelect={() => {
+                        setSelectedEvent("all");
+                        setOpen(false);
+                      }}
+                      className="cursor-pointer"
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          selectedEvent === "all" ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      Todos os Eventos
+                    </CommandItem>
+                    {allEvents.map((event) => (
+                      <CommandItem
+                        key={event.slug}
+                        value={event.slug}
+                        onSelect={() => {
+                          setSelectedEvent(event.slug);
+                          setOpen(false);
+                        }}
+                        className="cursor-pointer"
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            selectedEvent === event.slug ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                        {event.name}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
 
-      {/* Results Section */}
-      {filteredVolunteers.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-8 gap-y-12">
-          {filteredVolunteers.map((volunteer) => (
-            <VolunteerCard key={volunteer.linkedin} volunteer={volunteer} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-20 bg-muted/20 rounded-3xl border border-dashed border-border flex flex-col items-center">
-          <p className="text-muted-foreground mb-4 text-lg">Nenhum voluntário encontrado com esses filtros.</p>
-          <button
-            onClick={clearFilters}
-            className="text-purple-400 hover:text-purple-300 font-semibold transition-colors flex items-center gap-2"
+      {/* Results Section with Animation */}
+      <AnimatePresence mode="popLayout">
+        {filteredVolunteers.length > 0 ? (
+          <motion.div 
+            layout
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-8 gap-y-12"
           >
-            <X className="h-4 w-4" /> Limpar filtros
-          </button>
-        </div>
-      )}
+            {filteredVolunteers.map((volunteer) => (
+              <motion.div
+                key={volunteer.linkedin}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+              >
+                <VolunteerCard volunteer={volunteer} />
+              </motion.div>
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="text-center py-20 bg-muted/10 rounded-3xl border border-dashed border-border/50 flex flex-col items-center"
+          >
+            <p className="text-muted-foreground mb-4 text-lg">Nenhum voluntário encontrado com esses filtros.</p>
+            <Button
+              variant="ghost"
+              onClick={clearFilters}
+              className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 gap-2"
+            >
+              <X className="h-4 w-4" /> Limpar filtros
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
