@@ -103,7 +103,7 @@ export default function Header() {
           <ThemeToggle />
           
           <Button variant="outline" className="hidden md:flex border-purple-500/50 hover:bg-purple-500/10 text-purple-400" asChild>
-            <Link href="https://www.sympla.com.br/evento/devitape-wknd/3416021?share_id=copiarlink" target="_blank">
+            <Link href="/go/whatsapp" target="_blank">
               Fazer parte
             </Link>
           </Button>
@@ -165,8 +165,8 @@ export default function Header() {
             </div>
             
             <Button className="w-full h-14 text-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold shadow-lg" asChild>
-              <Link href="https://www.sympla.com.br/evento/devitape-wknd/3416021?share_id=copiarlink" target="_blank" onClick={() => setIsMenuOpen(false)}>
-                Fazer parte do evento
+              <Link href="/go/whatsapp" target="_blank" onClick={() => setIsMenuOpen(false)}>
+                Fazer parte da comunidade
               </Link>
             </Button>
           </div>
