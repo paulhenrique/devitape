@@ -24,27 +24,22 @@ export function VolunteerCard({ volunteer }: { volunteer: VolunteerWithEvents })
     ?.split(/[?#/]/)[0] || "";
 
   const avatarUrl = `https://unavatar.io/linkedin/${username}?fallback=false`;
-  const [imgSrc, setImgSrc] = useState(avatarUrl);
   const [hasError, setHasError] = useState(false);
 
   // Robustly handle images that are already broken or fail later
   useEffect(() => {
     const img = new Image();
     img.src = avatarUrl;
-    img.onerror = () => {
-      setHasError(true);
-      setImgSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(volunteer.name)}&background=6b21a8&color=fff&size=256&font-size=0.33`);
-    };
-  }, [avatarUrl, volunteer.name]);
+    img.onerror = () => setHasError(true);
+  }, [avatarUrl]);
 
   const hasBeenSpeaker = volunteer.events.some(e => e.isSpeaker);
-
-  const handleImageError = () => {
-    if (!hasError) {
-      setHasError(true);
-      setImgSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(volunteer.name)}&background=6b21a8&color=fff&size=256&font-size=0.33`);
-    }
-  };
+  const initials = volunteer.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .substring(0, 2);
 
   return (
     <div className="group flex flex-col items-center text-center relative">
@@ -59,17 +54,19 @@ export function VolunteerCard({ volunteer }: { volunteer: VolunteerWithEvents })
 
         {/* Subtler gradient ring */}
         <div className="absolute -inset-1 bg-gradient-to-tr from-purple-500/40 to-blue-500/40 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm"></div>
-        <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden border-2 border-border/50 bg-muted shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:border-purple-500/50">
-          <img 
-            key={imgSrc}
-            src={imgSrc} 
-            alt={volunteer.name}
-            className={cn(
-              "h-full w-full object-cover transition-all duration-500",
-              hasError ? "p-1 opacity-90" : ""
-            )}
-            onError={handleImageError}
-          />
+        <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden border-2 border-border/50 bg-muted shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:border-purple-500/50 flex items-center justify-center">
+          {hasError ? (
+            <div className="h-full w-full bg-gradient-to-br from-purple-700 to-purple-900 flex items-center justify-center text-white font-bold text-3xl md:text-4xl tracking-tighter">
+              {initials}
+            </div>
+          ) : (
+            <img 
+              src={avatarUrl} 
+              alt={volunteer.name}
+              className="h-full w-full object-cover transition-all duration-500"
+              onError={() => setHasError(true)}
+            />
+          )}
         </div>
       </div>
       
