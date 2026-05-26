@@ -42,6 +42,8 @@ volunteers:
     linkedin: "https://www.linkedin.com/in/lsantos-ti/"
   - name: "Wilton Ferraz Jr."
     linkedin: "https://www.linkedin.com/in/wilton-m-f-jr/"
+  - name: "Livia Suana"
+    linkedin: "https://www.linkedin.com/in/livia-suana?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
 ---
 
 O **Dev Itape**, em parceria com o **IFSP Campus Itapetininga**, apresenta o **Dev Itape WKND**. O evento reúne profissionais de destaque no mercado de tecnologia e no cenário acadêmico para uma manhã de troca de conhecimento e networking voltada a estudantes e profissionais da área.
