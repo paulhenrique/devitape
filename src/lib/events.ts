@@ -60,3 +60,15 @@ export async function getLatestEvent(): Promise<EventMetadata | null> {
   // If no upcoming, return the most recent past event
   return events[0] || null;
 }
+
+export async function getLastPastEvent(): Promise<EventMetadata | null> {
+  const events = await getAllEvents();
+  const now = new Date();
+  
+  // Find events that have already happened
+  const pastEvents = events
+    .filter(e => new Date(e.date) < now)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  return pastEvents[0] || null;
+}

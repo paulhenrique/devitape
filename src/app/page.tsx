@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getLatestEvent } from "@/lib/events";
-import { Calendar, MapPin, ArrowRight, Mic } from "lucide-react";
+import { getLatestEvent, getLastPastEvent } from "@/lib/events";
+import { Calendar, MapPin, ArrowRight, Mic, Camera } from "lucide-react";
 import { WhatsappIcon } from "@/components/Icons";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export default async function Home() {
   const latestEvent = await getLatestEvent();
+  const lastPastEvent = await getLastPastEvent();
 
   return (
     <div className="flex flex-col">
@@ -45,6 +46,21 @@ export default async function Home() {
       <section className="relative py-24 overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(124,58,237,0.1),transparent_70%)]" />
         <div className="container relative mx-auto px-6 md:px-10 lg:px-16 text-center">
+          {lastPastEvent?.photosLink && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-8 animate-in fade-in slide-in-from-top-4 duration-1000">
+              <Camera className="h-4 w-4 text-purple-400" />
+              <span className="text-sm font-medium text-purple-300">
+                Fotos do {lastPastEvent.title} já estão disponíveis!
+              </span>
+              <Link 
+                href={lastPastEvent.photosLink} 
+                className="text-sm font-bold text-purple-400 hover:text-purple-300 ml-1 flex items-center group"
+              >
+                Ver agora
+                <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+          )}
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-transparent">
             A comunidade dev de <br className="hidden md:block" />
             <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
