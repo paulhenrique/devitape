@@ -8,7 +8,17 @@ image: "/devitapewknd2.png"
 status: "published"
 volunteers:
   - name: " Paulo Candido"
+    isSpeaker: true
     linkedin: "https://www.linkedin.com/in/paulhenriquev"
+  - name: "Maylon Macedo"
+    isSpeaker: true
+    linkedin: "https://www.linkedin.com/in/maylonmacedo/"
+  - name: "Fábio Baldin"
+    isSpeaker: true
+    linkedin: "https://www.linkedin.com/in/fabiobaldin"
+  - name: "Jean Meira"
+    isSpeaker: true
+    linkedin: "https://www.linkedin.com/in/jean-meira/"
   - name: "Laura Silva"
     linkedin: "https://www.linkedin.com/in/laura-silva-54416735a"
   - name: "Helber Cruz"

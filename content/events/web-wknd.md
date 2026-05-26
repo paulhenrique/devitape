@@ -12,13 +12,13 @@ volunteers:
     isSpeaker: true
     talkTitle: "Do Figma para a Produção: IA Como Ferramenta Estratégica"
   - name: "Fábio Baldin"
-    linkedin: "https://www.linkedin.com/in/fabio-baldin"
     isSpeaker: true
+    linkedin: "https://www.linkedin.com/in/fabiobaldin"
     talkTitle: "Do Projeto para a API: IA Como Ferramenta Estratégica"
-  - name: "Alexandre de Paula"
-    linkedin: "https://www.linkedin.com/in/alexandredepaula"
-    isSpeaker: true
-    talkTitle: "Transformando necessidades em requisitos técnicos: IA Como Ferramenta Estratégica"
+  # - name: "Alexandre de Paula"
+  #   linkedin: "https://www.linkedin.com/in/abpaula77/"
+  #   isSpeaker: true
+  #   talkTitle: "Transformando necessidades em requisitos técnicos: IA Como Ferramenta Estratégica"
 ---
 
 Prepare-se para o **Web Communities WKND**, um mega evento que vai reunir as principais comunidades de tecnologia da nossa região (**DevPira**, **DevItape**, **DevRioClaro** e **DevLimeira**) em um dia repleto de conteúdo de alto nível, IA e muito networking!
