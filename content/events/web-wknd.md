@@ -1,9 +1,9 @@
 ---
 title: "Web Communities WKND - Boituva"
-date: "2026-08-15T09:00:00-03:00"
-location: "Etec Boituva - Boituva/SP"
-externalLink: ""
-description: "Uma imersão em tecnologia e IA unindo as principais comunidades web da região na Etec Boituva!"
+date: "2026-08-15T08:00:00-03:00"
+location: "Etec \"Vereador Valdivino Antônio Marcusso\" - Praça Coronel, Rua Antonio Franco Filho - Jd Nova Boituva, Boituva - SP"
+externalLink: "https://eventiza.com.br/evento/web-communities-wknd"
+description: "O WEB Communities WKND é um encontro presencial das principais comunidades de tecnologia da região. Em um único sábado, os participantes vão acompanhar a criação de uma aplicação completa, explorando diferentes áreas do desenvolvimento de software na prática."
 image: "/capa_sympla.png"
 status: "published"
 featured: true
@@ -32,7 +32,7 @@ volunteers:
 
 Prepare-se para o **Web Communities WKND**, um mega evento que vai reunir as principais comunidades de tecnologia da nossa região (**DevPira**, **DevItape**, **DevRioClaro** e **DevLimeira**) em um dia repleto de conteúdo de alto nível, IA e muito networking!
 
-O evento acontece presencialmente na **Etec Boituva** no sábado, **15 de agosto**.
+O evento acontece presencialmente na **Etec "Vereador Valdivino Antônio Marcusso"**, em Boituva, no sábado, **15 de agosto**, das **08h00 às 14h00**.
 
 ### 🎤 Conheça nossos Palestrantes e Temas:
 
