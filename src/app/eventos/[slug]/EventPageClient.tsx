@@ -4,13 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Calendar, MapPin, ExternalLink, Camera, Users, Mic2, ArrowLeft } from "lucide-react";
+import { Calendar, MapPin, ExternalLink, Camera, Users, Mic2, ArrowLeft, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import { LinkedInIcon } from "@/components/Icons";
 import { SpeakerCard } from "@/components/SpeakerCard";
 import { motion } from "framer-motion";
 import { Event } from "@/types/event";
+import { parseEventDate } from "@/lib/utils";
 
 interface EventPageClientProps {
   event: Event;
@@ -62,7 +63,7 @@ export default function EventPageClient({ event }: EventPageClientProps) {
           >
             <motion.div variants={fadeIn} className="flex items-center gap-3 text-purple-400 font-semibold mb-4 text-sm uppercase tracking-widest">
               <Calendar className="h-4 w-4" />
-              {format(new Date(event.date), "dd 'de' MMMM, yyyy 'às' HH:mm", { locale: ptBR })}
+              {format(parseEventDate(event.date), "dd 'de' MMMM, yyyy 'às' HH:mm", { locale: ptBR })}
             </motion.div>
             <motion.h1 variants={fadeIn} className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight leading-tight">
               {event.title}
@@ -140,6 +141,26 @@ export default function EventPageClient({ event }: EventPageClientProps) {
         </div>
       </section>
 
+      {/* About the Event */}
+      {event.content?.trim() && (
+        <section className="container mx-auto px-6 pb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto bg-card/50 border border-border/50 rounded-[2rem] p-8 md:p-14"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-bold uppercase tracking-wider mb-8">
+              <Info className="h-4 w-4" />
+              Sobre o evento
+            </div>
+            <div className="prose dark:prose-invert max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-strong:text-foreground prose-a:text-purple-400 prose-a:no-underline hover:prose-a:underline">
+              <ReactMarkdown>{event.content}</ReactMarkdown>
+            </div>
+          </motion.div>
+        </section>
+      )}
+
       {/* Speakers Hero */}
       {speakers.length > 0 && (
         <section className="py-32 container mx-auto px-6">
@@ -170,6 +191,7 @@ export default function EventPageClient({ event }: EventPageClientProps) {
                 <SpeakerCard 
                   name={speaker.name}
                   linkedin={speaker.linkedin}
+                  role={speaker.role}
                   talkTitle={speaker.talkTitle}
                   presentationLink={speaker.presentationLink}
                 />
@@ -214,13 +236,15 @@ export default function EventPageClient({ event }: EventPageClientProps) {
                 >
                   <VolunteerAvatar name={volunteer.name} linkedin={volunteer.linkedin} />
                   <h3 className="font-bold text-sm mb-1">{volunteer.name}</h3>
-                  <Link 
-                    href={volunteer.linkedin} 
-                    target="_blank" 
-                    className="text-muted-foreground hover:text-blue-500 transition-colors"
-                  >
-                    <LinkedInIcon className="h-4 w-4" />
-                  </Link>
+                  {volunteer.linkedin && (
+                    <Link 
+                      href={volunteer.linkedin} 
+                      target="_blank" 
+                      className="text-muted-foreground hover:text-blue-500 transition-colors"
+                    >
+                      <LinkedInIcon className="h-4 w-4" />
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </motion.div>

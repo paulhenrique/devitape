@@ -6,7 +6,6 @@ externalLink: "https://eventiza.com.br/evento/web-communities-wknd"
 description: "O WEB Communities WKND é um encontro presencial das principais comunidades de tecnologia da região. Em um único sábado, os participantes vão acompanhar a criação de uma aplicação completa, explorando diferentes áreas do desenvolvimento de software na prática."
 image: "/capa_sympla.png"
 status: "published"
-featured: true
 volunteers:
   - name: " Paulo Candido"
     linkedin: "https://www.linkedin.com/in/paulhenriquev"
