@@ -8,11 +8,12 @@ import { Mic2, FileText } from "lucide-react";
 interface SpeakerCardProps {
   name: string;
   linkedin: string;
+  role?: string;
   talkTitle?: string;
   presentationLink?: string;
 }
 
-export function SpeakerCard({ name, linkedin, talkTitle, presentationLink }: SpeakerCardProps) {
+export function SpeakerCard({ name, linkedin, role, talkTitle, presentationLink }: SpeakerCardProps) {
   const username = linkedin.split("/in/")[1]?.split(/[?#/]/)[0] || "";
   const avatarUrl = `https://unavatar.io/linkedin/${username}?fallback=false`;
   const [hasError, setHasError] = useState(false);
@@ -55,14 +56,19 @@ export function SpeakerCard({ name, linkedin, talkTitle, presentationLink }: Spe
       
       <div className="mb-6">
         <h3 className="text-2xl font-bold group-hover:text-purple-400 transition-colors mb-2">{name}</h3>
-        <Link 
-          href={linkedin} 
-          target="_blank" 
-          className="text-muted-foreground hover:text-blue-500 transition-colors inline-flex items-center gap-2 text-sm"
-        >
-          <LinkedInIcon className="h-4 w-4" />
-          LinkedIn
-        </Link>
+        {role && (
+          <p className="text-muted-foreground text-sm mb-2">{role}</p>
+        )}
+        {linkedin && (
+          <Link 
+            href={linkedin} 
+            target="_blank" 
+            className="text-muted-foreground hover:text-blue-500 transition-colors inline-flex items-center gap-2 text-sm"
+          >
+            <LinkedInIcon className="h-4 w-4" />
+            LinkedIn
+          </Link>
+        )}
       </div>
 
       {talkTitle && (

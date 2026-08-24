@@ -1,6 +1,7 @@
 export interface Volunteer {
   name: string;
   linkedin: string;
+  role?: string;
   isSpeaker?: boolean;
   talkTitle?: string;
   presentationLink?: string;

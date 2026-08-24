@@ -4,6 +4,7 @@ import { getLatestEvent, getLastPastEvent } from "@/lib/events";
 import { Calendar, MapPin, ArrowRight, Mic, Camera } from "lucide-react";
 import { WhatsappIcon } from "@/components/Icons";
 import { format } from "date-fns";
+import { parseEventDate } from "@/lib/utils";
 import { ptBR } from "date-fns/locale";
 
 export default async function Home() {
@@ -114,7 +115,7 @@ export default async function Home() {
                   </span>
                   <div className="flex items-center text-gray-400 text-sm">
                     <Calendar className="mr-2 h-4 w-4 text-purple-400" />
-                    {format(new Date(latestEvent.date), "dd 'de' MMMM, yyyy", { locale: ptBR })}
+                    {format(parseEventDate(latestEvent.date), "dd 'de' MMMM, yyyy", { locale: ptBR })}
                   </div>
                 </div>
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-purple-400 transition-colors">{latestEvent.title}</h3>

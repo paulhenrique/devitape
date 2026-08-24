@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Calendar, MapPin, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { parseEventDate } from "@/lib/utils";
 
 export const metadata = {
   title: "Eventos | devitape",
@@ -79,7 +80,7 @@ function EventCard({ event, isPast }: { event: EventMetadata, isPast: boolean })
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex items-center text-muted-foreground text-xs mb-3">
           <Calendar className="mr-2 h-3 w-3 text-purple-400" />
-          {format(new Date(event.date), "dd 'de' MMMM, yyyy", { locale: ptBR })}
+          {format(parseEventDate(event.date), "dd 'de' MMMM, yyyy", { locale: ptBR })}
         </div>
         <h3 className="text-xl font-bold mb-3 group-hover:text-purple-400 transition-colors line-clamp-2">{event.title}</h3>
         <p className="text-muted-foreground text-sm mb-6 line-clamp-3 flex-grow">{event.description}</p>
