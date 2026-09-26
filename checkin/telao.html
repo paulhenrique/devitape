@@ -8,16 +8,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/assets/styles.css" />
 </head>
 <body>
+  <div class="telao-event-picker" id="event-picker" hidden>
+    <div class="checkin-picker">
+      <p class="checkin-picker-title">Qual evento é hoje?</p>
+      <div id="event-picker-options"></div>
+    </div>
+  </div>
+
   <main class="telao-page">
     <section class="telao-qr-panel">
+      <img class="checkin-logo" src="/assets/logo.png" alt="DevItape" width="48" height="48" />
       <div id="qr-container" aria-hidden="true"></div>
       <p class="telao-domain" id="domain-label"></p>
+      <p class="telao-event-name" id="event-name"></p>
       <ol class="telao-steps">
         <li><span class="step-num">1</span> Abra a câmera do celular</li>
         <li><span class="step-num">2</span> Aponte para o QR code acima</li>

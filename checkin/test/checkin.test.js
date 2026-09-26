@@ -41,9 +41,11 @@ function freshModules() {
   delete require.cache[require.resolve('../api/_sympla')];
   delete require.cache[require.resolve('../api/checkin')];
   delete require.cache[require.resolve('../api/status')];
+  delete require.cache[require.resolve('../api/events')];
   return {
     checkinHandler: require('../api/checkin'),
     statusHandler: require('../api/status'),
+    eventsHandler: require('../api/events'),
   };
 }
 
@@ -74,7 +76,24 @@ const carlaFormatA = {
   checkin: { check_in: true, check_in_date: '2026-09-26T13:10:00-03:00' },
 };
 
-const dataset = [anaFormatA, brunoFormatB, carlaFormatA];
+// Duas inscrições com o mesmo e-mail e o mesmo nome (o bug real relatado:
+// a pessoa se inscreveu duas vezes e o sistema não devia adivinhar qual é).
+const diegoPendente = {
+  id: 'p4',
+  first_name: 'Diego',
+  last_name: 'Santos',
+  email: 'diego@example.com',
+  checkin: { check_in: false, check_in_date: null },
+};
+const diegoJaFeito = {
+  id: 'p5',
+  first_name: 'Diego',
+  last_name: 'Santos',
+  email: 'diego@example.com',
+  checkin: { check_in: true, check_in_date: '2026-09-26T13:00:00-03:00' },
+};
+
+const dataset = [anaFormatA, brunoFormatB, carlaFormatA, diegoPendente, diegoJaFeito];
 
 function installMockFetch({ onCheckin } = {}) {
   global.fetch = async (url) => {
@@ -188,10 +207,11 @@ test('status retorna present/total corretos e os 8 mais recentes ordenados', asy
   await statusHandler({}, res);
 
   assert.equal(res.statusCode, 200);
-  assert.equal(res.body.total, 3);
-  assert.equal(res.body.present, 2);
+  assert.equal(res.body.total, 5);
+  assert.equal(res.body.present, 3);
   assert.equal(res.body.recent[0].name, 'Carla N.');
   assert.equal(res.body.recent[1].name, 'Bruno L.');
+  assert.equal(res.body.recent[2].name, 'Diego S.');
   assert.equal(res.headers['Cache-Control'], 's-maxage=5, stale-while-revalidate=10');
 });
 
@@ -214,4 +234,163 @@ test('pagina os resultados seguindo pagination.next_cursor', async () => {
   await statusHandler({}, res);
 
   assert.equal(res.body.total, 3);
+});
+
+test('e-mail com duas inscrições pede pra escolher, sem adivinhar', async () => {
+  installMockFetch();
+  const { checkinHandler } = freshModules();
+
+  const res = fakeRes();
+  await checkinHandler({ method: 'POST', body: { email: 'diego@example.com' } }, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.status, 'choose');
+  assert.equal(res.body.options.length, 2);
+  assert.deepEqual(
+    res.body.options.map((o) => o.checkedIn).sort(),
+    [false, true]
+  );
+});
+
+test('escolhendo a inscrição pendente faz o check-in só dela', async () => {
+  const checkedIds = [];
+  installMockFetch({ onCheckin: (id) => checkedIds.push(id) });
+  const { checkinHandler } = freshModules();
+
+  const res = fakeRes();
+  await checkinHandler(
+    { method: 'POST', body: { email: 'diego@example.com', participantId: 'p4' } },
+    res
+  );
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.status, 'ok');
+  assert.deepEqual(checkedIds, ['p4']);
+});
+
+test('escolhendo a inscrição que já fez check-in retorna already', async () => {
+  installMockFetch();
+  const { checkinHandler } = freshModules();
+
+  const res = fakeRes();
+  await checkinHandler(
+    { method: 'POST', body: { email: 'diego@example.com', participantId: 'p5' } },
+    res
+  );
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.status, 'already');
+});
+
+test('sem evento fixo e sem event no body retorna missing_event', async () => {
+  installMockFetch();
+  const { checkinHandler } = freshModules();
+
+  const savedEventId = process.env.SYMPLA_EVENT_ID;
+  delete process.env.SYMPLA_EVENT_ID;
+
+  const res = fakeRes();
+  await checkinHandler({ method: 'POST', body: { email: 'ana@example.com' } }, res);
+
+  assert.equal(res.statusCode, 400);
+  assert.equal(res.body.status, 'missing_event');
+
+  process.env.SYMPLA_EVENT_ID = savedEventId;
+});
+
+test('event no body é usado mesmo sem SYMPLA_EVENT_ID configurada', async () => {
+  const checkedIds = [];
+  installMockFetch({ onCheckin: (id) => checkedIds.push(id) });
+  const { checkinHandler } = freshModules();
+
+  const savedEventId = process.env.SYMPLA_EVENT_ID;
+  delete process.env.SYMPLA_EVENT_ID;
+
+  const res = fakeRes();
+  await checkinHandler({ method: 'POST', body: { email: 'ana@example.com', event: 'evt-2' } }, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.status, 'ok');
+
+  process.env.SYMPLA_EVENT_ID = savedEventId;
+});
+
+test('GET /api/events em modo fixo devolve o SYMPLA_EVENT_ID sem chamar a Sympla', async () => {
+  global.fetch = async () => {
+    throw new Error('não deveria chamar a Sympla em modo fixo');
+  };
+  const { eventsHandler } = freshModules();
+
+  const res = fakeRes();
+  await eventsHandler({}, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.mode, 'fixed');
+  assert.equal(res.body.resolved.id, 'evt-1');
+  assert.deepEqual(res.body.candidates, []);
+});
+
+test('GET /api/events em modo automático resolve o evento de hoje pela data', async () => {
+  const savedEventId = process.env.SYMPLA_EVENT_ID;
+  delete process.env.SYMPLA_EVENT_ID;
+
+  const now = new Date();
+  const todayEvent = {
+    id: 3551360,
+    name: 'DevItape Connect',
+    start_date: new Date(now.getTime() - 60 * 60 * 1000).toISOString(),
+    end_date: new Date(now.getTime() + 60 * 60 * 1000).toISOString(),
+  };
+  const farEvent = {
+    id: 999,
+    name: 'Evento distante',
+    start_date: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    end_date: new Date(now.getTime() + 31 * 24 * 60 * 60 * 1000).toISOString(),
+  };
+
+  global.fetch = async () =>
+    jsonResponse(200, { data: [todayEvent, farEvent], pagination: { next_cursor: null } });
+
+  const { eventsHandler } = freshModules();
+  const res = fakeRes();
+  await eventsHandler({}, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.mode, 'auto');
+  assert.equal(res.body.resolved.id, '3551360');
+  assert.equal(res.body.resolved.slug, 'devitape-connect');
+  assert.equal(res.body.candidates.length, 2);
+
+  process.env.SYMPLA_EVENT_ID = savedEventId;
+});
+
+test('GET /api/events com dois eventos no mesmo dia não resolve sozinho', async () => {
+  const savedEventId = process.env.SYMPLA_EVENT_ID;
+  delete process.env.SYMPLA_EVENT_ID;
+
+  const now = new Date();
+  const eventA = {
+    id: 1,
+    name: 'Evento A',
+    start_date: new Date(now.getTime() - 60 * 60 * 1000).toISOString(),
+    end_date: new Date(now.getTime() + 60 * 60 * 1000).toISOString(),
+  };
+  const eventB = {
+    id: 2,
+    name: 'Evento B',
+    start_date: new Date(now.getTime() - 30 * 60 * 1000).toISOString(),
+    end_date: new Date(now.getTime() + 90 * 60 * 1000).toISOString(),
+  };
+
+  global.fetch = async () =>
+    jsonResponse(200, { data: [eventA, eventB], pagination: { next_cursor: null } });
+
+  const { eventsHandler } = freshModules();
+  const res = fakeRes();
+  await eventsHandler({}, res);
+
+  assert.equal(res.body.resolved, null);
+  assert.equal(res.body.candidates.length, 2);
+
+  process.env.SYMPLA_EVENT_ID = savedEventId;
 });

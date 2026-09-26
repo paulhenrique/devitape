@@ -1,8 +1,13 @@
 (function () {
   'use strict';
 
+  const EVENT_STORAGE_KEY = 'devitape:checkin:event';
+
   const qrContainer = document.getElementById('qr-container');
   const domainLabel = document.getElementById('domain-label');
+  const eventNameEl = document.getElementById('event-name');
+  const eventPicker = document.getElementById('event-picker');
+  const eventPickerOptions = document.getElementById('event-picker-options');
   const presentEl = document.getElementById('present-count');
   const totalEl = document.getElementById('total-count');
   const listEl = document.getElementById('telao-list');
@@ -10,12 +15,13 @@
 
   const POLL_INTERVAL_MS = 5000;
 
-  const AVATAR_COLORS = ['#f2b134', '#6fcf97', '#56ccf2', '#f2994a', '#bb6bd9', '#eb5757'];
+  const AVATAR_COLORS = ['#a855f7', '#3b82f6', '#ec4899', '#22d3ee', '#818cf8', '#f472b6'];
   const JOIN_PHRASES = ['chegou ao evento', 'entrou no rolê', 'checkou por aqui', 'tá dentro'];
 
   let knownKeys = new Set();
   let firstLoad = true;
   let lastPresent = null;
+  let currentEvent = null;
 
   function renderQr() {
     const qr = qrcode(0, 'M');
@@ -121,8 +127,11 @@
   }
 
   async function poll() {
+    if (!currentEvent) return;
     try {
-      const res = await fetch('/api/status', { cache: 'no-store' });
+      const res = await fetch(`/api/status?event=${encodeURIComponent(currentEvent.id)}`, {
+        cache: 'no-store',
+      });
       if (!res.ok) throw new Error('status not ok');
       const data = await res.json();
       render(data);
@@ -131,7 +140,76 @@
     }
   }
 
+  function startPolling() {
+    poll();
+    setInterval(poll, POLL_INTERVAL_MS);
+  }
+
+  function setEvent(event) {
+    currentEvent = event;
+    try {
+      localStorage.setItem(EVENT_STORAGE_KEY, JSON.stringify(event));
+    } catch {
+      // localStorage indisponível — segue sem persistir.
+    }
+    eventNameEl.textContent = event.name || '';
+    eventPicker.hidden = true;
+    startPolling();
+  }
+
+  function renderEventPicker(candidates) {
+    eventPickerOptions.innerHTML = '';
+    candidates.forEach((event) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'checkin-picker-option';
+      const dateLabel = event.startsAt
+        ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long' }).format(new Date(event.startsAt))
+        : '';
+      btn.innerHTML = `${event.name}${dateLabel ? `<span class="meta">${dateLabel}</span>` : ''}`;
+      btn.addEventListener('click', () => setEvent(event));
+      eventPickerOptions.appendChild(btn);
+    });
+    eventPicker.hidden = false;
+  }
+
+  function loadStoredEvent(candidates) {
+    try {
+      const raw = localStorage.getItem(EVENT_STORAGE_KEY);
+      if (!raw) return null;
+      const stored = JSON.parse(raw);
+      if (candidates.some((c) => String(c.id) === String(stored.id))) return stored;
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function initEvent() {
+    try {
+      const res = await fetch('/api/events');
+      const data = await res.json();
+
+      if (data.resolved) {
+        setEvent(data.resolved);
+        return;
+      }
+
+      const candidates = data.candidates || [];
+      const stored = loadStoredEvent(candidates);
+      if (stored) {
+        setEvent(stored);
+        return;
+      }
+
+      if (candidates.length) {
+        renderEventPicker(candidates);
+      }
+    } catch {
+      offlineBadge.classList.add('is-visible');
+    }
+  }
+
   renderQr();
-  poll();
-  setInterval(poll, POLL_INTERVAL_MS);
+  initEvent();
 })();

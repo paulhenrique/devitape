@@ -2,7 +2,9 @@
 
 const {
   MissingEnvError,
+  MissingEventError,
   SymplaApiError,
+  envEventId,
   listParticipants,
   checkinParticipant,
   isCheckedIn,
@@ -23,17 +25,26 @@ function readBody(req) {
   return {};
 }
 
-async function findMatches(rawEmail, normalizedEmail) {
-  let matches = await listParticipants({ email: normalizedEmail });
+function resolveEventId(bodyEventId) {
+  if (bodyEventId) return String(bodyEventId);
+  return envEventId();
+}
+
+async function findMatches(eventId, rawEmail, normalizedEmail) {
+  let matches = await listParticipants({ eventId, email: normalizedEmail });
   if (matches.length) return matches;
 
   if (rawEmail !== normalizedEmail) {
-    matches = await listParticipants({ email: rawEmail });
+    matches = await listParticipants({ eventId, email: rawEmail });
     if (matches.length) return matches;
   }
 
-  const all = await listParticipants();
+  const all = await listParticipants({ eventId });
   return all.filter((p) => ((p.email || '').trim().toLowerCase()) === normalizedEmail);
+}
+
+function participantOption(p) {
+  return { id: p.id, name: displayName(p), checkedIn: isCheckedIn(p) };
 }
 
 module.exports = async function handler(req, res) {
@@ -42,7 +53,8 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const { email: rawEmail } = readBody(req);
+  const body = readBody(req);
+  const { email: rawEmail, participantId } = body;
   const normalizedEmail = typeof rawEmail === 'string' ? rawEmail.trim().toLowerCase() : '';
 
   if (!normalizedEmail || !EMAIL_RE.test(normalizedEmail)) {
@@ -50,27 +62,51 @@ module.exports = async function handler(req, res) {
     return;
   }
 
+  const eventId = resolveEventId(body.event);
+  if (!eventId) {
+    res.status(400).json({ status: 'missing_event', message: 'Nenhum evento selecionado' });
+    return;
+  }
+
   try {
-    const matches = await findMatches(rawEmail, normalizedEmail);
+    const matches = await findMatches(eventId, rawEmail, normalizedEmail);
 
     if (!matches.length) {
       res.status(404).json({ status: 'not_found' });
       return;
     }
 
-    const pending = matches.find((p) => !isCheckedIn(p));
-
-    if (!pending) {
-      res.status(200).json({ status: 'already', name: displayName(matches[0]) });
+    // Mais de uma inscrição com o mesmo e-mail: pede pra pessoa escolher
+    // qual delas é a dela, em vez de assumir a primeira pendente.
+    if (matches.length > 1 && !participantId) {
+      res.status(200).json({ status: 'choose', options: matches.map(participantOption) });
       return;
     }
 
-    await checkinParticipant(pending.id);
-    res.status(200).json({ status: 'ok', name: displayName(pending) });
+    const target = participantId
+      ? matches.find((p) => String(p.id) === String(participantId))
+      : matches[0];
+
+    if (!target) {
+      res.status(404).json({ status: 'not_found' });
+      return;
+    }
+
+    if (isCheckedIn(target)) {
+      res.status(200).json({ status: 'already', name: displayName(target) });
+      return;
+    }
+
+    await checkinParticipant(eventId, target.id);
+    res.status(200).json({ status: 'ok', name: displayName(target) });
   } catch (err) {
     if (err instanceof MissingEnvError) {
       console.error('[checkin] configuração ausente', err.message);
       res.status(500).json({ status: 'error', message: 'Configuração ausente no servidor' });
+      return;
+    }
+    if (err instanceof MissingEventError) {
+      res.status(400).json({ status: 'missing_event', message: 'Nenhum evento selecionado' });
       return;
     }
     if (err instanceof SymplaApiError) {
