@@ -1,11 +1,10 @@
 (function () {
   'use strict';
 
-  // TODO: substituir pelos links reais do evento.
   const SOCIAL_LINKS = [
     { label: 'Site', href: 'https://devitape.com.br', icon: '🌐' },
-    { label: 'Instagram', href: 'https://instagram.com/devitape', icon: '📷' },
-    { label: 'Grupo do WhatsApp', href: 'https://chat.whatsapp.com/SEU_LINK_AQUI', icon: '💬' },
+    { label: 'Instagram', href: 'https://instagram.com/dev.itape', icon: '📷' },
+    { label: 'Grupo do WhatsApp', href: 'https://chat.whatsapp.com/LJI2K0j575ULrs385mrPSc', icon: '💬' },
   ];
 
   const form = document.getElementById('checkin-form');
