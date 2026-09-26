@@ -336,120 +336,539 @@ button {
   }
 }
 
+
 /* ---------- Telão ---------- */
 
-.telao-page {
-  position: relative;
-  height: 100dvh;
-  width: 100vw;
-  display: grid;
-  grid-template-columns: minmax(280px, 32%) 1fr;
-  overflow: hidden;
+.telao-body {
+  overflow-x: hidden;
 }
 
-.telao-page::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.1), transparent 45%),
-    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.08), transparent 45%);
-  background-size: 200% 200%;
-  animation: ambient-drift 18s ease-in-out infinite;
-}
+/* Fundo: manchas neon desfocadas em movimento lento */
 
-.telao-qr-panel,
-.telao-board {
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes ambient-drift {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .telao-page::before {
-    animation: none;
-  }
-}
-
-.telao-qr-panel {
-  background: var(--plate);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 3vw;
-  border-right: 2px solid var(--seam);
-}
-
-.telao-qr-panel canvas,
-.telao-qr-panel svg {
-  background: var(--text);
-  padding: 20px;
-  border-radius: 16px;
-  width: min(78%, 460px);
-  height: auto;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 60px rgba(168, 85, 247, 0.18);
-}
-
-.telao-domain {
-  font-family: var(--font-condensed);
-  font-weight: 600;
-  font-size: clamp(20px, 2.4vw, 32px);
-  letter-spacing: 0.04em;
-  color: var(--text);
-  text-align: center;
-}
-
-.telao-event-picker {
+.telao-bg {
   position: fixed;
   inset: 0;
-  z-index: 10;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, #13101f 0%, var(--bg) 70%);
 }
 
-.telao-event-picker .checkin-picker {
-  width: 100%;
-  max-width: 420px;
+.telao-blob {
+  position: absolute;
+  width: 45vmax;
+  height: 45vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: blob-drift 26s ease-in-out infinite alternate;
+}
+
+.telao-blob:nth-child(1) {
+  background: #a855f7;
+  top: -15%;
+  left: -10%;
+}
+
+.telao-blob:nth-child(2) {
+  background: #3b82f6;
+  bottom: -20%;
+  right: -10%;
+  animation-duration: 32s;
+  animation-delay: -8s;
+}
+
+.telao-blob:nth-child(3) {
+  background: #ec4899;
+  top: 30%;
+  right: 18%;
+  width: 30vmax;
+  height: 30vmax;
+  opacity: 0.22;
+  animation-duration: 22s;
+  animation-delay: -14s;
+}
+
+.telao-blob:nth-child(4) {
+  background: #22d3ee;
+  bottom: 5%;
+  left: 15%;
+  width: 28vmax;
+  height: 28vmax;
+  opacity: 0.18;
+  animation-duration: 30s;
+  animation-delay: -4s;
+}
+
+@keyframes blob-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(8vw, 6vh) scale(1.15);
+  }
+  100% {
+    transform: translate(-6vw, -4vh) scale(0.95);
+  }
+}
+
+/* Cards neon flutuando desfocados no fundo (quem já chegou) */
+
+.telao-float-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.telao-float-card {
+  --neon: var(--accent);
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px 6px 6px;
+  border-radius: 999px;
+  background: rgba(15, 15, 22, 0.55);
+  border: 1px solid var(--neon);
+  box-shadow: 0 0 14px var(--neon), inset 0 0 10px rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: clamp(12px, 1.1vw, 17px);
+  white-space: nowrap;
+  filter: blur(1.5px);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.telao-float-card.is-visible {
+  opacity: 0.42;
+}
+
+.telao-float-card .telao-avatar {
+  width: clamp(22px, 2vw, 32px);
+  height: clamp(22px, 2vw, 32px);
+  font-size: clamp(10px, 0.9vw, 13px);
+  box-shadow: 0 0 10px var(--neon);
+}
+
+.telao-float-card .name {
+  text-shadow: 0 0 8px var(--neon);
+}
+
+@keyframes drift-a {
+  from {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+  to {
+    transform: translate(40px, -30px) rotate(3deg);
+  }
+}
+
+@keyframes drift-b {
+  from {
+    transform: translate(0, 0) rotate(2deg);
+  }
+  to {
+    transform: translate(-35px, 25px) rotate(-3deg);
+  }
+}
+
+@keyframes drift-c {
+  from {
+    transform: translate(0, 0) rotate(-1deg);
+  }
+  to {
+    transform: translate(25px, 40px) rotate(2deg);
+  }
+}
+
+/* Marca e nome do evento no canto */
+
+.telao-brand {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.telao-brand img {
+  height: 40px;
+  width: auto;
 }
 
 .telao-event-name {
-  color: var(--text-secondary);
-  font-size: clamp(13px, 1.2vw, 18px);
-  text-align: center;
-  margin: -12px 0 0;
-}
-
-.telao-hint-compact {
-  color: var(--text-secondary);
-  font-size: clamp(13px, 1.2vw, 18px);
-  text-align: center;
-  max-width: 26ch;
   margin: 0;
+  color: var(--text-secondary);
+  font-size: clamp(13px, 1.1vw, 17px);
+  font-weight: 600;
 }
 
-.telao-board {
+/* Coluna central: QR → instruções → endereço → progresso → pilha */
+
+.telao-page {
+  position: relative;
+  z-index: 2;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 3vw 3vw 2vw;
-  gap: 2.5vh;
-  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 1.8vh, 22px);
+  padding: 3vh 24px;
+  text-align: center;
+}
+
+.telao-qr {
+  background: #ffffff;
+  padding: clamp(12px, 1.6vh, 20px);
+  border-radius: 20px;
+  line-height: 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 40px rgba(168, 85, 247, 0.45),
+    0 0 90px rgba(59, 130, 246, 0.25);
+  animation: qr-glow 4s ease-in-out infinite alternate;
+}
+
+.telao-qr svg {
+  display: block;
+  width: min(34vh, 420px);
+  height: auto;
+}
+
+@keyframes qr-glow {
+  from {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 36px rgba(168, 85, 247, 0.4),
+      0 0 80px rgba(59, 130, 246, 0.2);
+  }
+  to {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 48px rgba(236, 72, 153, 0.45),
+      0 0 110px rgba(34, 211, 238, 0.3);
+  }
+}
+
+.telao-cta-title {
+  margin: 0;
+  font-family: var(--font-condensed);
+  font-weight: 800;
+  font-size: clamp(22px, 3.2vh, 40px);
+  background: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.telao-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+}
+
+.telao-steps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: clamp(13px, 1.7vh, 18px);
+}
+
+.telao-steps .step-num {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: var(--accent-text);
+  font-family: var(--font-condensed);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.telao-domain {
+  margin: 0;
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: clamp(20px, 2.8vh, 34px);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-shadow: 0 0 18px rgba(168, 85, 247, 0.6);
+}
+
+/* Barra de progresso "elétrica" rumo à meta */
+
+.telao-progress {
+  width: min(760px, 86vw);
+  margin-top: 6px;
+}
+
+.telao-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.telao-progress-track {
+  position: relative;
+  flex: 1;
+  height: clamp(18px, 2.6vh, 30px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.telao-progress-fill {
+  --glow: rgba(168, 85, 247, 0.8);
+  position: relative;
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background-image: linear-gradient(90deg, #22d3ee, #a855f7, #ec4899, #3b82f6, #22d3ee);
+  background-size: 300% 100%;
+  box-shadow: 0 0 10px var(--glow), 0 0 26px var(--glow), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: energy-flow 2.6s linear infinite, energy-pulse 1.4s ease-in-out infinite alternate;
+}
+
+.telao-progress-fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.24) 0 8px,
+    rgba(255, 255, 255, 0) 8px 18px
+  );
+  background-size: 40px 100%;
+  mix-blend-mode: overlay;
+  animation: energy-stripes 0.7s linear infinite;
+}
+
+.telao-progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0.65) 50%,
+    rgba(255, 255, 255, 0) 65%
+  );
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  animation: energy-sheen 2.2s ease-in-out infinite;
+}
+
+.telao-progress-spark {
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff, 0 0 18px #22d3ee, 0 0 34px #a855f7;
+  animation: spark-flicker 0.18s steps(2) infinite;
+}
+
+.telao-progress-fill.is-empty .telao-progress-spark {
+  display: none;
+}
+
+.telao-progress-fill.is-goal {
+  --glow: rgba(163, 230, 53, 0.85);
+  background-image: linear-gradient(90deg, #22c55e, #a3e635, #facc15, #22c55e);
+}
+
+.telao-progress-fill.is-goal .telao-progress-spark {
+  box-shadow: 0 0 8px #ffffff, 0 0 18px #a3e635, 0 0 34px #facc15;
+}
+
+@keyframes energy-flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: -150% 50%;
+  }
+}
+
+@keyframes energy-pulse {
+  from {
+    filter: brightness(1) saturate(1.1);
+  }
+  to {
+    filter: brightness(1.35) saturate(1.4);
+  }
+}
+
+@keyframes energy-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
+}
+
+@keyframes energy-sheen {
+  from {
+    background-position: -100% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes spark-flicker {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1.35);
+  }
+}
+
+.telao-progress-percent {
+  flex: none;
+  min-width: 3.5ch;
+  text-align: right;
+  font-family: var(--font-condensed);
+  font-weight: 800;
+  font-size: clamp(18px, 2.6vh, 30px);
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.9), 0 0 22px rgba(59, 130, 246, 0.6);
+}
+
+.telao-progress-label {
+  margin: 8px 0 0;
+  text-align: left;
+  font-size: clamp(12px, 1.5vh, 16px);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Pilha de cards: quem está chegando, os mais novos na frente */
+
+.telao-stack {
+  --stack-card-h: clamp(44px, 6.2vh, 70px);
+  position: relative;
+  width: min(620px, 84vw);
+  /* Mesma geometria de layoutStack() em telao.js: 3 cards legíveis (com 2 gaps de 10px) + 5 bordas de 10px. */
+  height: calc(var(--stack-card-h) * 2.82 + 72px);
+  margin-top: 4px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+}
+
+.telao-stack-card {
+  --neon: var(--accent);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--stack-card-h);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px 0 8px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(36, 34, 50, 0.96), rgba(20, 20, 28, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  text-align: left;
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+  will-change: transform, opacity;
+}
+
+.telao-stack-card.is-front {
+  border-color: var(--neon);
+  box-shadow: 0 0 18px var(--neon), 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.telao-stack-card > * {
+  transition: opacity 0.4s ease;
+}
+
+.telao-stack-card.is-edge {
+  border-color: var(--neon);
+  box-shadow: 0 0 10px var(--neon);
+}
+
+.telao-stack-card.is-edge > * {
+  opacity: 0;
+}
+
+.telao-stack-card .telao-avatar {
+  width: calc(var(--stack-card-h) - 16px);
+  height: calc(var(--stack-card-h) - 16px);
+  font-size: calc(var(--stack-card-h) * 0.3);
+  box-shadow: 0 0 12px var(--neon);
+}
+
+.stack-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stack-name {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: calc(var(--stack-card-h) * 0.36);
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stack-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: calc(var(--stack-card-h) * 0.2);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.stack-sub .sub-front,
+.telao-stack-card.is-front .stack-sub .sub-default,
+.telao-stack-card:not(.is-front) .telao-live-dot {
+  display: none;
+}
+
+.telao-stack-card.is-front .stack-sub .sub-front {
+  display: inline;
+}
+
+.stack-time {
+  flex: none;
+  font-size: calc(var(--stack-card-h) * 0.24);
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .telao-live-dot {
@@ -474,12 +893,6 @@ button {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .telao-live-dot {
-    animation: none;
-  }
-}
-
 .telao-avatar {
   flex: none;
   width: clamp(32px, 4vw, 56px);
@@ -495,215 +908,29 @@ button {
   font-family: var(--font-condensed);
 }
 
-/* ---- Card de destaque: quem acabou de chegar ---- */
+/* Seletor de evento (quando a data não resolve sozinha) */
 
-.telao-spotlight {
+.telao-event-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: var(--bg);
   display: flex;
   align-items: center;
-  gap: 1.4vw;
-  padding: 1.6vh 1.8vw;
-  background: var(--plate);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  justify-content: center;
+  padding: 24px;
 }
 
-.telao-spotlight.is-entering {
-  animation: spotlight-in 0.5s ease-out;
-}
-
-.telao-avatar--lg {
-  width: clamp(56px, 7vw, 96px);
-  height: clamp(56px, 7vw, 96px);
-  font-size: clamp(20px, 2.8vw, 36px);
-}
-
-.telao-spotlight-text {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.telao-spotlight-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: clamp(12px, 1.2vw, 16px);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 600;
-}
-
-.telao-spotlight-name {
-  margin: 0;
-  font-family: var(--font-condensed);
-  font-weight: 700;
-  font-size: clamp(22px, 3.2vw, 42px);
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@keyframes spotlight-in {
-  from {
-    transform: rotateX(90deg);
-    opacity: 0;
-  }
-  to {
-    transform: rotateX(0deg);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .telao-spotlight.is-entering {
-    animation: none;
-  }
-}
-
-/* ---- Bolinhas flutuantes: quem já chegou antes ---- */
-
-.telao-bubbles {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: clamp(10px, 1.6vw, 22px);
-  padding: 4px;
-}
-
-.telao-bubble {
-  will-change: transform;
-  animation-name: float-a;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-.telao-bubble:nth-child(3n+1) {
-  animation-name: float-a;
-}
-
-.telao-bubble:nth-child(3n+2) {
-  animation-name: float-b;
-}
-
-.telao-bubble:nth-child(3n) {
-  animation-name: float-c;
-}
-
-@keyframes float-a {
-  from {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  to {
-    transform: translate(6px, -10px) rotate(4deg);
-  }
-}
-
-@keyframes float-b {
-  from {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  to {
-    transform: translate(-8px, -6px) rotate(-5deg);
-  }
-}
-
-@keyframes float-c {
-  from {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  to {
-    transform: translate(5px, 9px) rotate(3deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .telao-bubble {
-    animation: none;
-  }
-}
-
-/* ---- Barra de progresso rumo à meta esperada de público ---- */
-
-.telao-progress-wrap {
-  flex: none;
-}
-
-.telao-progress-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.telao-progress-percent {
-  font-family: var(--font-condensed);
-  font-weight: 800;
-  font-size: clamp(28px, 4vw, 56px);
-  background: var(--progress-color, var(--accent-gradient));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-.telao-progress-label {
-  font-size: clamp(13px, 1.3vw, 18px);
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.telao-progress-track {
-  position: relative;
-  height: clamp(22px, 3vw, 34px);
-  border-radius: 999px;
-  background: var(--plate);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 0.04);
-  overflow: hidden;
-}
-
-.telao-progress-fill {
-  height: 100%;
-  width: 0%;
-  border-radius: 999px;
-  background: var(--progress-color, var(--accent-gradient));
-  background-image: var(--progress-color, var(--accent-gradient)),
-    repeating-linear-gradient(
-      120deg,
-      rgba(255, 255, 255, 0.16) 0 14px,
-      rgba(255, 255, 255, 0) 14px 28px
-    );
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 0 16px rgba(168, 85, 247, 0.4);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  animation: progress-shimmer 1.6s linear infinite;
-}
-
-@keyframes progress-shimmer {
-  from {
-    background-position: 0 0, 0 0;
-  }
-  to {
-    background-position: 0 0, 40px 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .telao-progress-fill {
-    animation: none;
-    transition: none;
-  }
+.telao-event-picker .checkin-picker {
+  width: 100%;
+  max-width: 420px;
 }
 
 .telao-offline {
   position: fixed;
   bottom: 16px;
   right: 16px;
+  z-index: 20;
   background: rgba(210, 90, 80, 0.9);
   color: #fff;
   padding: 8px 14px;
@@ -718,7 +945,7 @@ button {
 
 .telao-demo-panel {
   position: fixed;
-  top: 16px;
+  bottom: 16px;
   left: 16px;
   z-index: 20;
   display: flex;
@@ -753,21 +980,24 @@ button {
 
 .telao-demo-panel button.secondary {
   background: transparent;
-  border: 1px solid var(--plate);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text);
 }
 
-@media (max-width: 900px) {
-  .telao-page {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    height: auto;
-    min-height: 100dvh;
+@media (prefers-reduced-motion: reduce) {
+  .telao-blob,
+  .telao-float-card,
+  .telao-qr,
+  .telao-progress-fill,
+  .telao-progress-fill::before,
+  .telao-progress-fill::after,
+  .telao-progress-spark,
+  .telao-live-dot {
+    animation: none !important;
   }
 
-  .telao-qr-panel {
-    border-right: none;
-    border-bottom: 2px solid var(--seam);
-    padding: 20px;
+  .telao-stack-card,
+  .telao-progress-fill {
+    transition: none;
   }
 }

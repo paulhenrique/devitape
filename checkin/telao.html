@@ -13,7 +13,15 @@
   />
   <link rel="stylesheet" href="/assets/styles.css" />
 </head>
-<body>
+<body class="telao-body">
+  <div class="telao-bg" aria-hidden="true">
+    <div class="telao-blob"></div>
+    <div class="telao-blob"></div>
+    <div class="telao-blob"></div>
+    <div class="telao-blob"></div>
+  </div>
+  <div class="telao-float-layer" id="float-layer" aria-hidden="true"></div>
+
   <div class="telao-event-picker" id="event-picker" hidden>
     <div class="checkin-picker">
       <p class="checkin-picker-title">Qual evento é hoje?</p>
@@ -21,36 +29,35 @@
     </div>
   </div>
 
+  <header class="telao-brand">
+    <img src="/assets/logo.png" alt="DevItape" width="40" height="40" />
+    <p class="telao-event-name" id="event-name"></p>
+  </header>
+
   <main class="telao-page">
-    <section class="telao-qr-panel">
-      <img class="checkin-logo" src="/assets/logo.png" alt="DevItape" width="48" height="48" />
-      <div id="qr-container" class="telao-qr-big" aria-hidden="true"></div>
-      <p class="telao-domain" id="domain-label"></p>
-      <p class="telao-event-name" id="event-name"></p>
-      <p class="telao-hint-compact">📱 Aponte a câmera pro QR e faça seu check-in</p>
-    </section>
+    <div class="telao-qr" id="qr-container" aria-hidden="true"></div>
 
-    <section class="telao-board">
-      <div class="telao-spotlight" id="spotlight" hidden>
-        <span class="telao-avatar telao-avatar--lg" id="spotlight-avatar"></span>
-        <div class="telao-spotlight-text">
-          <p class="telao-spotlight-label"><span class="telao-live-dot" aria-hidden="true"></span>Acabou de chegar</p>
-          <p class="telao-spotlight-name" id="spotlight-name"></p>
-        </div>
-      </div>
+    <h1 class="telao-cta-title">Faça seu check-in</h1>
+    <ol class="telao-steps">
+      <li><span class="step-num">1</span> Abra a câmera do celular</li>
+      <li><span class="step-num">2</span> Aponte para o QR code</li>
+      <li><span class="step-num">3</span> Digite o e-mail da inscrição</li>
+    </ol>
+    <p class="telao-domain" id="domain-label"></p>
 
-      <div class="telao-bubbles" id="bubbles" aria-hidden="true"></div>
-
-      <div class="telao-progress-wrap">
-        <div class="telao-progress-header">
-          <span class="telao-progress-percent" id="progress-percent">0%</span>
-          <span class="telao-progress-label" id="progress-label">rumo à meta de hoje</span>
-        </div>
+    <section class="telao-progress" aria-label="Chegada do público">
+      <div class="telao-progress-row">
         <div class="telao-progress-track">
-          <div class="telao-progress-fill" id="progress-fill"></div>
+          <div class="telao-progress-fill is-empty" id="progress-fill">
+            <span class="telao-progress-spark"></span>
+          </div>
         </div>
+        <span class="telao-progress-percent" id="progress-percent">0%</span>
       </div>
+      <p class="telao-progress-label" id="progress-label">rumo à meta de hoje</p>
     </section>
+
+    <div class="telao-stack" id="stack"></div>
   </main>
 
   <div class="telao-offline" id="offline-badge">Sem conexão com o servidor</div>

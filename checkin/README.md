@@ -60,36 +60,37 @@ Sympla** — a API pública (pelo menos a parte documentada que usamos) não
 expõe um jeito de renomear participante. Isso ainda precisa ser ajustado
 manualmente no painel da Sympla, se for o caso.
 
-## Telão: destaque + bolinhas + meta de público
+## Telão: QR no centro, meta de público e pilha de chegadas
 
-O telão não mostra mais "X de Y presentes" nem uma lista rolável de nomes —
-evento gratuito raramente bate o número de ingressos confirmados, e ficar
-comparando com o total inteiro parecia sempre "vazio". Agora:
+O telão não mostra mais "X de Y presentes" — evento gratuito raramente bate
+o número de ingressos confirmados, e comparar com o total inteiro parecia
+sempre "vazio". Layout atual, tudo numa coluna central:
 
-- Um **card de destaque** mostra só quem acabou de fazer check-in (o mais
-  recente), com a mesma animação de virada de antes.
-- Quem chegou antes disso vira uma **bolinha flutuante** (avatar com
-  iniciais, flutuando devagar, tipo "dançando" na tela) — até um limite de
-  30 check-ins recentes (`RECENT_LIMIT` em `api/status.js`; não é "todo
-  mundo presente" de propósito, pra não pesar o payload/DOM num evento
-  grande).
-- Uma **barra de progresso** grossa e animada substitui o contador cru. Ela
-  não mira o total de ingressos, e sim uma **meta realista** — por padrão
-  60% do total confirmado (`GOAL_RATIO` em `api/status.js` e em
-  `assets/telao.js`, ajuste os dois se mudar). Ao bater a meta, a barra muda
-  de cor e o texto vira "Meta batida! 🚀".
+1. **QR code** grande no centro, com brilho neon.
+2. **"Faça seu check-in"** + os 3 passos, e logo abaixo o endereço do site.
+3. **Barra de progresso "elétrica"** (gradiente correndo, listras, brilho
+   pulsando e uma faísca na ponta), com a porcentagem pequena à direita.
+   Ela mira uma **meta realista**: 60% do total confirmado (`GOAL_RATIO` em
+   `api/status.js` e em `assets/telao.js` — ajuste os dois se mudar). Ao
+   bater a meta, fica verde/amarela e o texto vira "Meta batida!".
+4. **Pilha de cards** de quem está chegando: o mais novo entra na frente e
+   empurra os outros pra trás; os 3 primeiros dá pra ler, os de trás só
+   mostram a bordinha, com degradê no fim.
 
-Tudo respeita `prefers-reduced-motion` (as animações somem, o conteúdo
+No fundo, manchas neon desfocadas se movem devagar, e os check-ins
+recentes (até 30, `RECENT_LIMIT` em `api/status.js`) viram **cards neon
+flutuando** desfocados pelas laterais da tela, só pra dar movimento.
+
+Tudo respeita `prefers-reduced-motion` (as animações param, o conteúdo
 continua aparecendo normalmente).
 
-### Testar sem estar no evento: `telao.html?demo=1`
+### Testar sem estar no evento: `telao?demo=1`
 
-Sem depender da Sympla, `/telao?demo=1` (ou `/telao.html?demo=1` local)
-entra em modo demo: some o QR real de check-in (o QR continua sendo gerado,
-mas a tela toda passa a rodar com dados fake), simula chegadas sozinho a
-cada poucos segundos, e mostra um painelzinho no canto com dois botões:
-**"➕ Simular chegada"** (adiciona uma pessoa com nome aleatório na hora) e
-**"🔄 Reiniciar"**. Também aceita `?demo=1&total=120` pra testar com outra
+Sem depender da Sympla, `/telao?demo=1` roda com dados fake: simula
+chegadas sozinho a cada poucos segundos e mostra um painel no canto
+inferior esquerdo com **"➕ Simular chegada"** (nome aleatório na hora),
+**"⚡ +10 de uma vez"** (pra ver a barra encher e bater a meta rápido) e
+**"🔄 Reiniciar"**. Também aceita `&total=120` pra testar com outra
 capacidade (padrão 80) e `&present=N` pra já começar com N pessoas.
 
 ## Rodar os testes locais (mock da Sympla)
