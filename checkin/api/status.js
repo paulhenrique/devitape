@@ -11,7 +11,16 @@ const {
   displayName,
 } = require('./_sympla');
 
-const RECENT_LIMIT = 8;
+// Limite de quantos check-ins recentes voltam pro telão: o mais novo vira o
+// card de destaque, os demais viram as bolinhas flutuantes. Não é "todo
+// mundo presente" de propósito (custo de payload/DOM), só uma janela maior
+// que os 8 antigos pra dar mais bolinhas conforme o evento anda.
+const RECENT_LIMIT = 30;
+
+// Evento gratuito raramente enche 100% dos ingressos confirmados. A meta
+// "realista" que a barra de progresso persegue é uma fração da capacidade
+// confirmada — ajuste aqui se a expectativa mudar.
+const GOAL_RATIO = 0.6;
 
 const timeFormatter = new Intl.DateTimeFormat('pt-BR', {
   hour: '2-digit',
@@ -50,8 +59,11 @@ module.exports = async function handler(req, res) {
       .slice(0, RECENT_LIMIT)
       .map((x) => ({ name: displayName(x.p), time: formatTime(x.date) }));
 
+    const total = all.length;
+    const goal = Math.max(1, Math.round(total * GOAL_RATIO));
+
     res.setHeader('Cache-Control', 's-maxage=5, stale-while-revalidate=10');
-    res.status(200).json({ present: checkedIn.length, total: all.length, recent });
+    res.status(200).json({ present: checkedIn.length, total, goal, recent });
   } catch (err) {
     if (err instanceof MissingEnvError) {
       console.error('[status] configuração ausente', err.message);
