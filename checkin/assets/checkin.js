@@ -1,12 +1,21 @@
 (function () {
   'use strict';
 
+  // TODO: substituir pelos links reais do evento.
+  const SOCIAL_LINKS = [
+    { label: 'Site', href: 'https://devitape.com.br', icon: '🌐' },
+    { label: 'Instagram', href: 'https://instagram.com/devitape', icon: '📷' },
+    { label: 'Grupo do WhatsApp', href: 'https://chat.whatsapp.com/SEU_LINK_AQUI', icon: '💬' },
+  ];
+
   const form = document.getElementById('checkin-form');
   const emailInput = document.getElementById('email-input');
   const submitButton = document.getElementById('submit-button');
   const statusBox = document.getElementById('status-box');
   const statusSpinner = document.getElementById('status-spinner');
   const statusMessage = document.getElementById('status-message');
+  const ctaBox = document.getElementById('cta-box');
+  const ctaLinks = document.getElementById('cta-links');
 
   function firstName(name) {
     return (name || '').split(' ')[0] || '';
@@ -22,6 +31,28 @@
   function clearStatus() {
     statusBox.classList.remove('is-visible');
     statusMessage.innerHTML = '';
+  }
+
+  function renderCta() {
+    if (ctaLinks.childElementCount) return;
+    SOCIAL_LINKS.forEach((link) => {
+      const a = document.createElement('a');
+      a.className = 'checkin-cta-link';
+      a.href = link.href;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = `${link.icon} ${link.label}`;
+      ctaLinks.appendChild(a);
+    });
+  }
+
+  function showCta() {
+    renderCta();
+    ctaBox.classList.add('is-visible');
+  }
+
+  function hideCta() {
+    ctaBox.classList.remove('is-visible');
   }
 
   async function submitCheckin(email) {
@@ -46,6 +77,7 @@
 
     submitButton.disabled = true;
     clearStatus();
+    hideCta();
     setStatus('loading', 'Fazendo check-in...', { loading: true });
 
     try {
@@ -56,11 +88,13 @@
           'success',
           `Check-in feito, <strong>${firstName(data.name)}</strong>! Olha o telão.`
         );
+        showCta();
       } else if (status === 200 && data.status === 'already') {
         setStatus(
           'already',
           `Tudo certo, <strong>${firstName(data.name)}</strong>. Seu check-in já estava feito.`
         );
+        showCta();
       } else if (status === 404) {
         setStatus(
           'not_found',
