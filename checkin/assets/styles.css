@@ -1,17 +1,24 @@
 :root {
-  --bg: #151b2b;
-  --plate: #222a3f;
-  --seam: #0f1420;
-  --text: #f3efe4;
-  --accent: #f2b134;
-  --text-secondary: #8c93a8;
-  --font-base: 'Archivo', system-ui, sans-serif;
+  --bg: #0a0a0f;
+  --plate: #18181f;
+  --seam: #050508;
+  --text: #f5f5f7;
+  --accent: #a855f7;
+  --accent-2: #3b82f6;
+  --accent-gradient: linear-gradient(135deg, var(--accent), var(--accent-2));
+  --accent-text: #ffffff;
+  --text-secondary: #9ca3af;
+  --font-base: 'Geist', ui-sans-serif, system-ui, sans-serif;
   --font-condensed: 'Archivo Narrow', system-ui, sans-serif;
   --radius: 14px;
 }
 
 * {
   box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 html,
@@ -54,12 +61,22 @@ button {
   text-align: center;
 }
 
+.checkin-logo {
+  height: 48px;
+  width: auto;
+  align-self: center;
+}
+
 .checkin-title {
   font-family: var(--font-condensed);
   font-weight: 700;
   font-size: clamp(28px, 8vw, 40px);
   letter-spacing: 0.01em;
   margin: 0;
+  background: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .checkin-subtitle {
@@ -96,8 +113,8 @@ button {
   font-weight: 700;
   border-radius: var(--radius);
   border: none;
-  background: var(--accent);
-  color: #1a1406;
+  background: var(--accent-gradient);
+  color: var(--accent-text);
   cursor: pointer;
   transition: transform 0.1s ease, opacity 0.2s ease;
 }
@@ -124,7 +141,7 @@ button {
 }
 
 .checkin-status[data-kind='success'] {
-  background: rgba(242, 177, 52, 0.15);
+  background: rgba(168, 85, 247, 0.15);
   border: 1px solid var(--accent);
 }
 
@@ -179,6 +196,7 @@ button {
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
   transition: border-color 0.15s ease, transform 0.1s ease;
 }
 
@@ -189,6 +207,111 @@ button {
 
 .checkin-cta-link:active {
   transform: scale(0.97);
+}
+
+.checkin-event-info {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--plate);
+  text-align: left;
+}
+
+.checkin-event-info.is-visible {
+  display: flex;
+}
+
+.checkin-event-info h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.checkin-event-info p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.checkin-event-info .actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.checkin-event-info .btn-primary,
+.checkin-event-info .btn-secondary {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.checkin-event-info .btn-primary {
+  border: none;
+  background: var(--accent-gradient);
+  color: var(--accent-text);
+}
+
+.checkin-event-info .btn-secondary {
+  border: 1px solid var(--plate);
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.checkin-event-info .btn-secondary:hover,
+.checkin-event-info .btn-secondary:focus-visible {
+  border-color: var(--accent);
+}
+
+.checkin-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.checkin-picker-title {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.checkin-picker-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 2px solid var(--plate);
+  background: var(--plate);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.checkin-picker-option:hover,
+.checkin-picker-option:focus-visible {
+  border-color: var(--accent);
+}
+
+.checkin-picker-option .meta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .spinner {
@@ -230,8 +353,8 @@ button {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 20% 20%, rgba(242, 177, 52, 0.08), transparent 45%),
-    radial-gradient(circle at 80% 80%, rgba(242, 177, 52, 0.06), transparent 45%);
+  background: radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.1), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.08), transparent 45%);
   background-size: 200% 200%;
   animation: ambient-drift 18s ease-in-out infinite;
 }
@@ -289,6 +412,29 @@ button {
   text-align: center;
 }
 
+.telao-event-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.telao-event-picker .checkin-picker {
+  width: 100%;
+  max-width: 420px;
+}
+
+.telao-event-name {
+  color: var(--text-secondary);
+  font-size: clamp(13px, 1.2vw, 18px);
+  text-align: center;
+  margin: -12px 0 0;
+}
+
 .telao-hint {
   color: var(--text-secondary);
   font-size: clamp(13px, 1.2vw, 18px);
@@ -324,8 +470,8 @@ button {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: var(--accent);
-  color: #1a1406;
+  background: var(--accent-gradient);
+  color: var(--accent-text);
   font-family: var(--font-condensed);
   font-weight: 800;
   font-size: 13px;
@@ -349,9 +495,12 @@ button {
 
 .telao-counter .num {
   font-size: clamp(48px, 8vw, 120px);
-  color: var(--accent);
   line-height: 1;
   display: inline-block;
+  background: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .telao-counter .num.is-bump {
@@ -424,13 +573,30 @@ button {
 .telao-list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 4px 0 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
   flex: 1;
   min-height: 0;
   justify-content: flex-start;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.telao-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.telao-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.telao-list::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 999px;
 }
 
 .telao-row {
@@ -456,7 +622,7 @@ button {
   align-items: center;
   justify-content: center;
   background: var(--row-accent, var(--accent));
-  color: #1a1406;
+  color: #ffffff;
   font-weight: 800;
   font-size: clamp(13px, 1.6vw, 22px);
 }

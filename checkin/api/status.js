@@ -2,7 +2,9 @@
 
 const {
   MissingEnvError,
+  MissingEventError,
   SymplaApiError,
+  envEventId,
   listParticipants,
   isCheckedIn,
   checkinDate,
@@ -24,9 +26,21 @@ function formatTime(dateStr) {
   return timeFormatter.format(date);
 }
 
+function resolveEventId(req) {
+  const fromQuery = req.query && req.query.event;
+  if (fromQuery) return String(fromQuery);
+  return envEventId();
+}
+
 module.exports = async function handler(req, res) {
+  const eventId = resolveEventId(req);
+  if (!eventId) {
+    res.status(400).json({ status: 'error', message: 'Nenhum evento selecionado' });
+    return;
+  }
+
   try {
-    const all = await listParticipants();
+    const all = await listParticipants({ eventId });
     const checkedIn = all.filter(isCheckedIn);
 
     const recent = checkedIn
@@ -42,6 +56,10 @@ module.exports = async function handler(req, res) {
     if (err instanceof MissingEnvError) {
       console.error('[status] configuração ausente', err.message);
       res.status(500).json({ status: 'error', message: 'Configuração ausente no servidor' });
+      return;
+    }
+    if (err instanceof MissingEventError) {
+      res.status(400).json({ status: 'error', message: 'Nenhum evento selecionado' });
       return;
     }
     if (err instanceof SymplaApiError) {

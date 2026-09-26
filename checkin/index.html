@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/assets/styles.css" />
@@ -16,10 +16,16 @@
 <body>
   <main class="checkin-page">
     <div class="checkin-card">
+      <img class="checkin-logo" src="/assets/logo.png" alt="DevItape" width="48" height="48" />
       <h1 class="checkin-title">Check-in DevItape</h1>
-      <p class="checkin-subtitle">Digite o e-mail que você usou na inscrição.</p>
+      <p class="checkin-subtitle" id="checkin-subtitle">Digite o e-mail que você usou na inscrição.</p>
 
-      <form class="checkin-form" id="checkin-form">
+      <div class="checkin-picker" id="event-picker" hidden>
+        <p class="checkin-picker-title">Qual evento é hoje?</p>
+        <div id="event-picker-options"></div>
+      </div>
+
+      <form class="checkin-form" id="checkin-form" hidden>
         <input
           class="checkin-input"
           id="email-input"
@@ -34,9 +40,25 @@
         </button>
       </form>
 
+      <div class="checkin-picker" id="participant-picker" hidden>
+        <p class="checkin-picker-title">Encontramos mais de uma inscrição com esse e-mail. Qual é a sua?</p>
+        <div id="participant-picker-options"></div>
+      </div>
+
       <div class="checkin-status" id="status-box" role="status" aria-live="polite">
         <div class="spinner" id="status-spinner" hidden></div>
         <p id="status-message"></p>
+      </div>
+
+      <div class="checkin-event-info" id="event-info-box">
+        <h3 id="event-info-title"></h3>
+        <p>Dá uma olhada na programação, fica à vontade e chama a gente se precisar de algo.</p>
+        <div class="actions">
+          <a class="btn-primary" id="event-info-link" href="#" target="_blank" rel="noopener noreferrer">
+            Ver roteiro do evento
+          </a>
+          <button class="btn-secondary" id="event-info-share" type="button">Compartilhar</button>
+        </div>
       </div>
 
       <div class="checkin-cta" id="cta-box">
