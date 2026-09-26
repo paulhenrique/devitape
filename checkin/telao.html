@@ -18,7 +18,11 @@
     <section class="telao-qr-panel">
       <div id="qr-container" aria-hidden="true"></div>
       <p class="telao-domain" id="domain-label"></p>
-      <p class="telao-hint">Aponte a câmera e faça seu check-in</p>
+      <ol class="telao-steps">
+        <li><span class="step-num">1</span> Abra a câmera do celular</li>
+        <li><span class="step-num">2</span> Aponte para o QR code acima</li>
+        <li><span class="step-num">3</span> Digite seu e-mail e toque em "Fazer check-in"</li>
+      </ol>
     </section>
 
     <section class="telao-board">
@@ -27,7 +31,7 @@
         <span class="label">de <span id="total-count">0</span> presentes</span>
       </div>
 
-      <p class="telao-list-title">Últimos check-ins</p>
+      <p class="telao-list-title"><span class="telao-live-dot" aria-hidden="true"></span>Chegando agora</p>
       <ul class="telao-list" id="telao-list"></ul>
     </section>
   </main>
