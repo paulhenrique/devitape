@@ -100,7 +100,7 @@ export default async function Home() {
               </Button>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-12 items-center bg-card border border-border rounded-3xl overflow-hidden p-8 md:p-12 hover:border-purple-500/50 transition-all duration-300 group">
+            <div className="relative grid md:grid-cols-2 gap-12 items-center bg-card border border-border rounded-3xl overflow-hidden p-8 md:p-12 hover:border-purple-500/50 transition-all duration-300 group">
               <div className="relative aspect-video rounded-2xl overflow-hidden">
                 <img
                   src={latestEvent.image}
@@ -126,15 +126,33 @@ export default async function Home() {
                   <MapPin className="mr-2 h-5 w-5 text-purple-400" />
                   {latestEvent.location}
                 </div>
-                <Button size="lg" className="bg-white text-black hover:bg-gray-200 px-8" asChild>
-                  <Link 
-                    href={latestEvent.externalLink || `/eventos/${latestEvent.slug}`} 
-                    target={latestEvent.externalLink ? "_blank" : undefined}
+                <div className="relative z-10 flex flex-wrap items-center gap-4">
+                  {latestEvent.externalLink && (
+                    <Button size="lg" className="bg-white text-black hover:bg-gray-200 px-8" asChild>
+                      <Link href={latestEvent.externalLink} target="_blank" rel="noopener noreferrer">
+                        Garantir minha vaga
+                      </Link>
+                    </Button>
+                  )}
+                  <Button
+                    size="lg"
+                    variant={latestEvent.externalLink ? "outline" : "default"}
+                    className={latestEvent.externalLink ? "border-border hover:bg-accent px-8" : "bg-white text-black hover:bg-gray-200 px-8"}
+                    asChild
                   >
-                    {latestEvent.externalLink ? "Garantir minha vaga" : "Ver detalhes do evento"}
-                  </Link>
-                </Button>
+                    <Link href={`/eventos/${latestEvent.slug}`}>
+                      Ver detalhes do evento
+                    </Link>
+                  </Button>
+                </div>
               </div>
+              <Link
+                href={`/eventos/${latestEvent.slug}`}
+                className="absolute inset-0 z-0"
+                aria-label={`Ver detalhes de ${latestEvent.title}`}
+              >
+                <span className="sr-only">Ver detalhes de {latestEvent.title}</span>
+              </Link>
             </div>
           </div>
         </section>
