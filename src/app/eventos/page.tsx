@@ -63,11 +63,13 @@ export default async function EventsPage() {
 }
 
 function EventCard({ event, isPast }: { event: EventMetadata, isPast: boolean }) {
+  const detailHref = `/eventos/${event.slug}`;
+
   return (
-    <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-300 group flex flex-col h-full">
+    <div className="relative bg-card border border-border rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-300 group flex flex-col h-full">
       <div className="relative aspect-video overflow-hidden">
-        <img 
-          src={event.image} 
+        <img
+          src={event.image}
           alt={event.title}
           className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
         />
@@ -88,17 +90,24 @@ function EventCard({ event, isPast }: { event: EventMetadata, isPast: boolean })
           <MapPin className="mr-2 h-3 w-3" />
           {event.location}
         </div>
-        <Button 
-          variant={isPast ? "secondary" : "default"} 
-          className={`w-full ${!isPast ? 'bg-purple-600 hover:bg-purple-700 text-white' : ''}`}
+        <Button
+          variant={isPast ? "secondary" : "default"}
+          className={`relative z-10 w-full ${!isPast ? 'bg-purple-600 hover:bg-purple-700 text-white' : ''}`}
           asChild
         >
-          <Link href={`/eventos/${event.slug}`} className="flex items-center justify-center">
+          <Link href={detailHref} className="flex items-center justify-center">
             {isPast ? "Ver detalhes do evento" : "Ver detalhes / Inscrição"}
             <ExternalLink className="ml-2 h-4 w-4" />
           </Link>
         </Button>
       </div>
+      <Link
+        href={detailHref}
+        className="absolute inset-0 z-0"
+        aria-label={`Ver detalhes de ${event.title}`}
+      >
+        <span className="sr-only">Ver detalhes de {event.title}</span>
+      </Link>
     </div>
   );
 }
