@@ -397,10 +397,11 @@ button {
 .telao-qr-panel canvas,
 .telao-qr-panel svg {
   background: var(--text);
-  padding: 16px;
-  border-radius: 12px;
-  width: min(60%, 320px);
+  padding: 20px;
+  border-radius: 16px;
+  width: min(78%, 460px);
   height: auto;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 60px rgba(168, 85, 247, 0.18);
 }
 
 .telao-domain {
@@ -435,112 +436,20 @@ button {
   margin: -12px 0 0;
 }
 
-.telao-hint {
+.telao-hint-compact {
   color: var(--text-secondary);
   font-size: clamp(13px, 1.2vw, 18px);
   text-align: center;
-  max-width: 22ch;
-}
-
-.telao-steps {
-  list-style: none;
+  max-width: 26ch;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  max-width: 280px;
-}
-
-.telao-steps li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-secondary);
-  font-size: clamp(12px, 1.1vw, 16px);
-  line-height: 1.3;
-}
-
-.telao-steps .step-num {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--accent-gradient);
-  color: var(--accent-text);
-  font-family: var(--font-condensed);
-  font-weight: 800;
-  font-size: 13px;
 }
 
 .telao-board {
   display: flex;
   flex-direction: column;
   padding: 3vw 3vw 2vw;
-  gap: 2vh;
+  gap: 2.5vh;
   min-height: 0;
-}
-
-.telao-counter {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4em;
-  font-family: var(--font-condensed);
-  font-weight: 800;
-}
-
-.telao-counter .num {
-  font-size: clamp(48px, 8vw, 120px);
-  line-height: 1;
-  display: inline-block;
-  background: var(--accent-gradient);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-.telao-counter .num.is-bump {
-  animation: counter-bump 0.5s ease;
-}
-
-@keyframes counter-bump {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .telao-counter .num.is-bump {
-    animation: none;
-  }
-}
-
-.telao-counter .label {
-  font-size: clamp(18px, 2.2vw, 34px);
-  color: var(--text-secondary);
-}
-
-.telao-list-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-condensed);
-  font-weight: 600;
-  font-size: clamp(14px, 1.4vw, 20px);
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin: 0;
 }
 
 .telao-live-dot {
@@ -550,6 +459,7 @@ button {
   background: #5ac97a;
   box-shadow: 0 0 0 0 rgba(90, 201, 122, 0.6);
   animation: live-pulse 2s ease-out infinite;
+  flex: none;
 }
 
 @keyframes live-pulse {
@@ -570,49 +480,6 @@ button {
   }
 }
 
-.telao-list {
-  list-style: none;
-  margin: 0;
-  padding: 0 4px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-  min-height: 0;
-  justify-content: flex-start;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-}
-
-.telao-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.telao-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.telao-list::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 999px;
-}
-
-.telao-row {
-  position: relative;
-  background: var(--plate);
-  border-radius: 10px;
-  padding: 1.2vh 1.6vw;
-  display: flex;
-  align-items: center;
-  gap: 1.2vw;
-  font-family: var(--font-condensed);
-  transform-style: preserve-3d;
-  perspective: 600px;
-  border-left: 4px solid var(--row-accent, var(--accent));
-}
-
 .telao-avatar {
   flex: none;
   width: clamp(32px, 4vw, 56px);
@@ -621,47 +488,66 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--row-accent, var(--accent));
+  background: var(--bubble-accent, var(--accent));
   color: #ffffff;
   font-weight: 800;
   font-size: clamp(13px, 1.6vw, 22px);
+  font-family: var(--font-condensed);
 }
 
-.telao-row-text {
-  flex: 1;
+/* ---- Card de destaque: quem acabou de chegar ---- */
+
+.telao-spotlight {
+  display: flex;
+  align-items: center;
+  gap: 1.4vw;
+  padding: 1.6vh 1.8vw;
+  background: var(--plate);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.telao-spotlight.is-entering {
+  animation: spotlight-in 0.5s ease-out;
+}
+
+.telao-avatar--lg {
+  width: clamp(56px, 7vw, 96px);
+  height: clamp(56px, 7vw, 96px);
+  font-size: clamp(20px, 2.8vw, 36px);
+}
+
+.telao-spotlight-text {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
-.telao-row .name {
-  color: var(--text);
-  font-size: clamp(16px, 2.2vw, 30px);
+.telao-spotlight-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: clamp(12px, 1.2vw, 16px);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.telao-spotlight-name {
+  margin: 0;
+  font-family: var(--font-condensed);
   font-weight: 700;
+  font-size: clamp(22px, 3.2vw, 42px);
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.telao-row .subtext {
-  color: var(--text-secondary);
-  font-size: clamp(11px, 1.1vw, 16px);
-  font-weight: 500;
-}
-
-.telao-row .time {
-  flex: none;
-  color: var(--text-secondary);
-  font-size: clamp(12px, 1.2vw, 18px);
-  font-weight: 500;
-}
-
-.telao-row.is-entering {
-  animation: flip-in 0.6s ease-out;
-}
-
-@keyframes flip-in {
+@keyframes spotlight-in {
   from {
     transform: rotateX(90deg);
     opacity: 0;
@@ -673,8 +559,144 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .telao-row.is-entering {
+  .telao-spotlight.is-entering {
     animation: none;
+  }
+}
+
+/* ---- Bolinhas flutuantes: quem já chegou antes ---- */
+
+.telao-bubbles {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: clamp(10px, 1.6vw, 22px);
+  padding: 4px;
+}
+
+.telao-bubble {
+  will-change: transform;
+  animation-name: float-a;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.telao-bubble:nth-child(3n+1) {
+  animation-name: float-a;
+}
+
+.telao-bubble:nth-child(3n+2) {
+  animation-name: float-b;
+}
+
+.telao-bubble:nth-child(3n) {
+  animation-name: float-c;
+}
+
+@keyframes float-a {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(6px, -10px) rotate(4deg);
+  }
+}
+
+@keyframes float-b {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(-8px, -6px) rotate(-5deg);
+  }
+}
+
+@keyframes float-c {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(5px, 9px) rotate(3deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .telao-bubble {
+    animation: none;
+  }
+}
+
+/* ---- Barra de progresso rumo à meta esperada de público ---- */
+
+.telao-progress-wrap {
+  flex: none;
+}
+
+.telao-progress-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.telao-progress-percent {
+  font-family: var(--font-condensed);
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 56px);
+  background: var(--progress-color, var(--accent-gradient));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.telao-progress-label {
+  font-size: clamp(13px, 1.3vw, 18px);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.telao-progress-track {
+  position: relative;
+  height: clamp(22px, 3vw, 34px);
+  border-radius: 999px;
+  background: var(--plate);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+.telao-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--progress-color, var(--accent-gradient));
+  background-image: var(--progress-color, var(--accent-gradient)),
+    repeating-linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.16) 0 14px,
+      rgba(255, 255, 255, 0) 14px 28px
+    );
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 0 16px rgba(168, 85, 247, 0.4);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: progress-shimmer 1.6s linear infinite;
+}
+
+@keyframes progress-shimmer {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 0 0, 40px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .telao-progress-fill {
+    animation: none;
+    transition: none;
   }
 }
 
@@ -692,6 +714,47 @@ button {
 
 .telao-offline.is-visible {
   display: block;
+}
+
+.telao-demo-panel {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--plate);
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.telao-demo-panel .demo-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.telao-demo-panel button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--accent-gradient);
+  color: var(--accent-text);
+  font-weight: 700;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.telao-demo-panel button.secondary {
+  background: transparent;
+  border: 1px solid var(--plate);
+  color: var(--text);
 }
 
 @media (max-width: 900px) {

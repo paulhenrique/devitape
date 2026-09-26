@@ -199,7 +199,7 @@ test('falha da Sympla retorna 502', async () => {
   assert.equal(res.statusCode, 502);
 });
 
-test('status retorna present/total corretos e os 8 mais recentes ordenados', async () => {
+test('status retorna present/total/goal corretos e os check-ins mais recentes ordenados', async () => {
   installMockFetch();
   const { statusHandler } = freshModules();
 
@@ -209,6 +209,7 @@ test('status retorna present/total corretos e os 8 mais recentes ordenados', asy
   assert.equal(res.statusCode, 200);
   assert.equal(res.body.total, 5);
   assert.equal(res.body.present, 3);
+  assert.equal(res.body.goal, 3); // round(5 * 0.6)
   assert.equal(res.body.recent[0].name, 'Carla N.');
   assert.equal(res.body.recent[1].name, 'Bruno L.');
   assert.equal(res.body.recent[2].name, 'Diego S.');

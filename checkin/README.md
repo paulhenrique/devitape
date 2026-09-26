@@ -14,7 +14,7 @@ Projeto estático (HTML puro) + funções serverless na Vercel, sem framework e 
   é o número no fim do `externalLink` do frontmatter.
 - `api/events.js` — `GET` → lista/resolve qual evento é "hoje".
 - `api/checkin.js` — `POST { email, event?, participantId? }`.
-- `api/status.js` — `GET ?event=<id>` → `{ present, total, recent }`.
+- `api/status.js` — `GET ?event=<id>` → `{ present, total, goal, recent }`.
 - `vercel.json` — `cleanUrls` (pra `/telao` funcionar sem `.html`).
 
 ## Variáveis de ambiente (só no servidor, nunca commitadas)
@@ -59,6 +59,38 @@ Isso resolve o check-in errado, mas **não corrige o nome duplicado na
 Sympla** — a API pública (pelo menos a parte documentada que usamos) não
 expõe um jeito de renomear participante. Isso ainda precisa ser ajustado
 manualmente no painel da Sympla, se for o caso.
+
+## Telão: destaque + bolinhas + meta de público
+
+O telão não mostra mais "X de Y presentes" nem uma lista rolável de nomes —
+evento gratuito raramente bate o número de ingressos confirmados, e ficar
+comparando com o total inteiro parecia sempre "vazio". Agora:
+
+- Um **card de destaque** mostra só quem acabou de fazer check-in (o mais
+  recente), com a mesma animação de virada de antes.
+- Quem chegou antes disso vira uma **bolinha flutuante** (avatar com
+  iniciais, flutuando devagar, tipo "dançando" na tela) — até um limite de
+  30 check-ins recentes (`RECENT_LIMIT` em `api/status.js`; não é "todo
+  mundo presente" de propósito, pra não pesar o payload/DOM num evento
+  grande).
+- Uma **barra de progresso** grossa e animada substitui o contador cru. Ela
+  não mira o total de ingressos, e sim uma **meta realista** — por padrão
+  60% do total confirmado (`GOAL_RATIO` em `api/status.js` e em
+  `assets/telao.js`, ajuste os dois se mudar). Ao bater a meta, a barra muda
+  de cor e o texto vira "Meta batida! 🚀".
+
+Tudo respeita `prefers-reduced-motion` (as animações somem, o conteúdo
+continua aparecendo normalmente).
+
+### Testar sem estar no evento: `telao.html?demo=1`
+
+Sem depender da Sympla, `/telao?demo=1` (ou `/telao.html?demo=1` local)
+entra em modo demo: some o QR real de check-in (o QR continua sendo gerado,
+mas a tela toda passa a rodar com dados fake), simula chegadas sozinho a
+cada poucos segundos, e mostra um painelzinho no canto com dois botões:
+**"➕ Simular chegada"** (adiciona uma pessoa com nome aleatório na hora) e
+**"🔄 Reiniciar"**. Também aceita `?demo=1&total=120` pra testar com outra
+capacidade (padrão 80) e `&present=N` pra já começar com N pessoas.
 
 ## Rodar os testes locais (mock da Sympla)
 
