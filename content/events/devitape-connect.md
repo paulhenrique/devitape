@@ -1,6 +1,6 @@
 ---
 title: "DevItape Connect"
-date: "2026-09-12T08:00:00-03:00"
+date: "2026-09-26T08:00:00-03:00"
 location: "Fatec Itapetininga - Rua João Vieira Camargo, 104 - Itapetininga - SP"
 externalLink: "https://www.sympla.com.br/evento/devitape-connect/3551360"
 description: "O DevItape Connect aproxima quem estuda e trabalha com tecnologia na nossa região de quem constrói e sustenta sistemas todos os dias. Um dia inteiro de palestras sobre arquitetura em nuvem, confiabilidade de sistemas, desenvolvimento backend e liderança técnica, na Fatec Itapetininga."
@@ -36,7 +36,7 @@ volunteers:
 
 O **DevItape Connect** nasceu de uma ideia simples: aproximar quem estuda e trabalha com tecnologia na nossa região de quem constrói e sustenta sistemas todos os dias. Nada de teoria distante. A proposta é ouvir as histórias reais, os problemas que aparecem em produção e as decisões que precisam ser tomadas no meio do caminho.
 
-No dia **12 de setembro**, a partir das **08h**, a **Fatec Itapetininga** recebe um dia inteiro de palestras sobre arquitetura em nuvem, confiabilidade de sistemas, desenvolvimento backend e liderança técnica. Entre uma palestra e outra sobra espaço para perguntas, conversa e networking com profissionais que atuam na área bem aqui perto de você.
+No dia **26 de setembro**, a partir das **08h**, a **Fatec Itapetininga** recebe um dia inteiro de palestras sobre arquitetura em nuvem, confiabilidade de sistemas, desenvolvimento backend e liderança técnica. Entre uma palestra e outra sobra espaço para perguntas, conversa e networking com profissionais que atuam na área bem aqui perto de você.
 
 ### 🎤 Palestrantes
 
@@ -51,7 +51,7 @@ Estudantes de tecnologia, desenvolvedores em início ou meio de carreira, profis
 
 ### 📍 Informações práticas
 
-- **Data:** 12 de setembro (sábado)
+- **Data:** 26 de setembro (sábado)
 - **Horário:** das 08h às 13h
 - **Local:** Fatec Itapetininga
 - **Endereço:** Rua João Vieira Camargo, 104 - Itapetininga - SP
