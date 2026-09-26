@@ -6,7 +6,6 @@ externalLink: "https://www.sympla.com.br/evento/devitape-connect/3551360"
 description: "O DevItape Connect aproxima quem estuda e trabalha com tecnologia na nossa região de quem constrói e sustenta sistemas todos os dias. Um dia inteiro de palestras sobre arquitetura em nuvem, confiabilidade de sistemas, desenvolvimento backend e liderança técnica, na Fatec Itapetininga."
 image: "https://images.sympla.com.br/6a8d7f3f41e99-lg.png"
 status: "published"
-featured: true
 volunteers:
   - name: "Felipe KiKo"
     role: "Arquiteto Cloud"
