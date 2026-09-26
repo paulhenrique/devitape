@@ -1,0 +1,350 @@
+:root {
+  --bg: #151b2b;
+  --plate: #222a3f;
+  --seam: #0f1420;
+  --text: #f3efe4;
+  --accent: #f2b134;
+  --text-secondary: #8c93a8;
+  --font-base: 'Archivo', system-ui, sans-serif;
+  --font-condensed: 'Archivo Narrow', system-ui, sans-serif;
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ---------- Página do participante ---------- */
+
+.checkin-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  gap: 24px;
+}
+
+.checkin-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+.checkin-title {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: clamp(28px, 8vw, 40px);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.checkin-subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.checkin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkin-input {
+  width: 100%;
+  padding: 16px 18px;
+  font-size: 17px;
+  border-radius: var(--radius);
+  border: 2px solid var(--plate);
+  background: var(--plate);
+  color: var(--text);
+}
+
+.checkin-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.checkin-button {
+  width: 100%;
+  padding: 16px 18px;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: var(--radius);
+  border: none;
+  background: var(--accent);
+  color: #1a1406;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+.checkin-button:active {
+  transform: scale(0.98);
+}
+
+.checkin-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkin-status {
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  font-size: 15px;
+  line-height: 1.5;
+  display: none;
+}
+
+.checkin-status.is-visible {
+  display: block;
+}
+
+.checkin-status[data-kind='success'] {
+  background: rgba(242, 177, 52, 0.15);
+  border: 1px solid var(--accent);
+}
+
+.checkin-status[data-kind='already'] {
+  background: rgba(140, 147, 168, 0.15);
+  border: 1px solid var(--text-secondary);
+}
+
+.checkin-status[data-kind='error'],
+.checkin-status[data-kind='not_found'] {
+  background: rgba(210, 90, 80, 0.15);
+  border: 1px solid #d25a50;
+}
+
+.checkin-status strong {
+  color: var(--accent);
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 3px solid rgba(243, 239, 228, 0.25);
+  border-top-color: var(--text);
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
+
+/* ---------- Telão ---------- */
+
+.telao-page {
+  height: 100dvh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: minmax(280px, 32%) 1fr;
+  overflow: hidden;
+}
+
+.telao-qr-panel {
+  background: var(--plate);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 3vw;
+  border-right: 2px solid var(--seam);
+}
+
+.telao-qr-panel canvas,
+.telao-qr-panel svg {
+  background: var(--text);
+  padding: 16px;
+  border-radius: 12px;
+  width: min(60%, 320px);
+  height: auto;
+}
+
+.telao-domain {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: clamp(20px, 2.4vw, 32px);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-align: center;
+}
+
+.telao-hint {
+  color: var(--text-secondary);
+  font-size: clamp(13px, 1.2vw, 18px);
+  text-align: center;
+  max-width: 22ch;
+}
+
+.telao-board {
+  display: flex;
+  flex-direction: column;
+  padding: 3vw 3vw 2vw;
+  gap: 2vh;
+  min-height: 0;
+}
+
+.telao-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+  font-family: var(--font-condensed);
+  font-weight: 800;
+}
+
+.telao-counter .num {
+  font-size: clamp(48px, 8vw, 120px);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.telao-counter .label {
+  font-size: clamp(18px, 2.2vw, 34px);
+  color: var(--text-secondary);
+}
+
+.telao-list-title {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: clamp(14px, 1.4vw, 20px);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0;
+}
+
+.telao-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  justify-content: flex-start;
+}
+
+.telao-row {
+  position: relative;
+  background: var(--plate);
+  border-radius: 10px;
+  padding: 1.4vh 1.6vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-condensed);
+  font-size: clamp(18px, 2.6vw, 36px);
+  font-weight: 600;
+  transform-style: preserve-3d;
+  perspective: 600px;
+}
+
+.telao-row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: var(--seam);
+  transform: translateY(-1px);
+  pointer-events: none;
+}
+
+.telao-row .name {
+  color: var(--text);
+}
+
+.telao-row .time {
+  color: var(--text-secondary);
+  font-size: 0.65em;
+  font-weight: 500;
+}
+
+.telao-row.is-entering {
+  animation: flip-in 0.6s ease-out;
+}
+
+@keyframes flip-in {
+  from {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .telao-row.is-entering {
+    animation: none;
+  }
+}
+
+.telao-offline {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(210, 90, 80, 0.9);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: none;
+}
+
+.telao-offline.is-visible {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .telao-page {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .telao-qr-panel {
+    border-right: none;
+    border-bottom: 2px solid var(--seam);
+    padding: 20px;
+  }
+}

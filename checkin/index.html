@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Check-in — DevItape</title>
+  <meta name="color-scheme" content="dark" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <main class="checkin-page">
+    <div class="checkin-card">
+      <h1 class="checkin-title">Check-in DevItape</h1>
+      <p class="checkin-subtitle">Digite o e-mail que você usou na inscrição.</p>
+
+      <form class="checkin-form" id="checkin-form">
+        <input
+          class="checkin-input"
+          id="email-input"
+          type="email"
+          inputmode="email"
+          autocomplete="email"
+          placeholder="seuemail@exemplo.com"
+          required
+        />
+        <button class="checkin-button" id="submit-button" type="submit">
+          Fazer check-in
+        </button>
+      </form>
+
+      <div class="checkin-status" id="status-box" role="status" aria-live="polite">
+        <div class="spinner" id="status-spinner" hidden></div>
+        <p id="status-message"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/checkin.js"></script>
+</body>
+</html>

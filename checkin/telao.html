@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Telão — Check-in DevItape</title>
+  <meta name="color-scheme" content="dark" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <main class="telao-page">
+    <section class="telao-qr-panel">
+      <div id="qr-container" aria-hidden="true"></div>
+      <p class="telao-domain" id="domain-label"></p>
+      <p class="telao-hint">Aponte a câmera e faça seu check-in</p>
+    </section>
+
+    <section class="telao-board">
+      <div class="telao-counter">
+        <span class="num" id="present-count">0</span>
+        <span class="label">de <span id="total-count">0</span> presentes</span>
+      </div>
+
+      <p class="telao-list-title">Últimos check-ins</p>
+      <ul class="telao-list" id="telao-list"></ul>
+    </section>
+  </main>
+
+  <div class="telao-offline" id="offline-badge">Sem conexão com o servidor</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="/assets/telao.js"></script>
+</body>
+</html>
