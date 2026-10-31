@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timekeeper (admin) — DevItape</title>
+  <meta name="color-scheme" content="dark" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/timer.css" />
+</head>
+<body class="tka-body">
+  <header class="tka-header">
+    <div class="tka-brand">
+      <img src="/assets/logo.png" alt="DevItape" width="36" height="36" />
+      <div>
+        <h1>Timekeeper</h1>
+        <p>Controle do tempo dos apresentadores</p>
+      </div>
+    </div>
+    <div class="tka-share">
+      <span class="tka-muted">Tela do apresentador:</span>
+      <a id="presenter-link" href="/timer" target="_blank" rel="noopener"></a>
+      <button class="tka-btn tka-btn-small" id="copy-link" type="button">Copiar link</button>
+    </div>
+    <span class="tka-conn" id="conn"></span>
+  </header>
+
+  <div class="tka-alert" id="setup-alert" hidden>
+    <strong>Falta conectar o armazenamento.</strong>
+    Na Vercel, abra o projeto → <em>Storage</em> → <em>Create Database</em> → <em>Upstash for Redis</em>
+    (plano grátis) → conecte a este projeto e faça um Redeploy. Sem isso o admin e a tela do
+    apresentador não conseguem compartilhar o mesmo cronômetro.
+  </div>
+
+  <div class="tka-toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <main class="tka-grid">
+    <section class="tka-card tka-now" aria-labelledby="now-heading">
+      <p class="tka-label" id="now-heading">Agora</p>
+      <h2 class="tka-now-title" id="now-title">—</h2>
+      <p class="tka-muted" id="now-next"></p>
+      <div class="tka-clock" id="now-clock">--:--</div>
+      <p class="tka-muted" id="now-status"></p>
+
+      <div class="tka-controls">
+        <button class="tka-btn" type="button" data-action="prev">⏮ Anterior</button>
+        <button class="tka-btn tka-btn-primary tka-btn-big" type="button" id="play-toggle">▶ Play</button>
+        <button class="tka-btn" type="button" data-action="next">Próxima ⏭</button>
+      </div>
+      <div class="tka-controls">
+        <button class="tka-btn" type="button" data-adjust="-60">−1 min</button>
+        <button class="tka-btn" type="button" data-adjust="60">+1 min</button>
+        <button class="tka-btn" type="button" data-action="resetStep">↺ Reiniciar etapa</button>
+      </div>
+    </section>
+
+    <section class="tka-card tka-preview" aria-labelledby="preview-heading">
+      <div class="tka-card-head">
+        <h3 id="preview-heading">Prévia da tela do apresentador</h3>
+        <a class="tka-muted" href="/timer" target="_blank" rel="noopener">abrir ↗</a>
+      </div>
+      <div class="tka-preview-box" id="preview-box">
+        <iframe id="preview" src="/timer?preview=1" title="Prévia da tela do apresentador" tabindex="-1"></iframe>
+      </div>
+    </section>
+
+    <section class="tka-card tka-notify" aria-labelledby="notify-heading">
+      <h3 id="notify-heading">Avisar o apresentador</h3>
+      <div class="tka-presets">
+        <button class="tka-chip" type="button" data-text="Faltam 5 minutos">Faltam 5 min</button>
+        <button class="tka-chip" type="button" data-text="Faltam 2 minutos">Faltam 2 min</button>
+        <button class="tka-chip" type="button" data-text="Hora de encerrar">Hora de encerrar</button>
+        <button class="tka-chip" type="button" data-text="Abra para perguntas">Abrir perguntas</button>
+        <button class="tka-chip" type="button" data-text="Fale mais perto do microfone">Microfone</button>
+      </div>
+      <form class="tka-notify-form" id="notify-form">
+        <input class="checkin-input" id="notify-input" type="text" maxlength="140" placeholder="Ou escreva um recado…" autocomplete="off" />
+        <button class="tka-btn tka-btn-primary" type="submit">Enviar</button>
+      </form>
+      <div class="tka-active-message" id="active-message" hidden>
+        <span class="tka-muted">Na tela agora:</span>
+        <strong id="active-message-text"></strong>
+        <span class="tka-muted" id="active-message-left"></span>
+        <button class="tka-btn tka-btn-small" id="clear-message" type="button">Tirar da tela</button>
+      </div>
+    </section>
+
+    <section class="tka-card tka-steps" aria-labelledby="steps-heading">
+      <div class="tka-card-head">
+        <h3 id="steps-heading">Roteiro</h3>
+        <span class="tka-dirty" id="steps-dirty" hidden>Alterações não salvas</span>
+      </div>
+      <ol class="tka-step-list" id="steps-list"></ol>
+      <p class="tka-muted tka-empty" id="steps-empty" hidden>Nenhuma etapa ainda. Ex.: Abertura, 10 min.</p>
+      <div class="tka-steps-actions">
+        <button class="tka-btn" type="button" id="add-step">+ Adicionar etapa</button>
+        <span class="tka-spacer"></span>
+        <button class="tka-btn" type="button" id="discard-steps" disabled>Descartar</button>
+        <button class="tka-btn tka-btn-primary" type="button" id="save-steps" disabled>Salvar roteiro</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/timer-core.js"></script>
+  <script src="/assets/timer-admin.js"></script>
+</body>
+</html>
