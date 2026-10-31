@@ -119,7 +119,7 @@ Cronômetro de palco compartilhado entre aparelhos:
 
 Todo mundo vê o mesmo tempo porque o estado fica num lugar só (Redis) e cada
 tela corrige o próprio relógio pelo horário do servidor. O estado é pequeno e
-temporário: expira sozinho 7 dias depois da última mudança.
+temporário: expira sozinho 30 dias depois da última mudança.
 
 **Configurar uma vez na Vercel:** projeto → *Storage* → *Create Database* →
 *Upstash for Redis* (plano grátis) → conectar a este projeto em todos os

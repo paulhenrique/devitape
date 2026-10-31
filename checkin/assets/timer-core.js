@@ -7,6 +7,7 @@
   const MESSAGE_VISIBLE_MS = 60 * 1000;
   // Abaixo disso o relógio fica amarelo (antes do vermelho de tempo esgotado).
   const WARNING_MS = 60 * 1000;
+  const REQUEST_TIMEOUT_MS = 6000;
 
   function currentStep(state) {
     return (state && state.steps[state.currentIndex]) || null;
@@ -67,12 +68,14 @@
   function createSync(options) {
     const pollMs = options.pollMs || 1500;
     const hiddenPollMs = options.hiddenPollMs || pollMs;
+    const timeoutMs = options.timeoutMs || REQUEST_TIMEOUT_MS;
     let offset = 0;
     let samples = [];
     let state = null;
     let timer = null;
-    let seq = 0;
-    let appliedSeq = 0;
+    // Contador de eventos (envio/aplicação) pra ordenar sem depender de milissegundos.
+    let tick = 0;
+    let lastAppliedTick = 0;
 
     function recordClock(serverNow, sentAt, receivedAt) {
       if (typeof serverNow !== 'number') return;
@@ -82,17 +85,41 @@
       offset = samples.reduce((best, s) => (s.rtt < best.rtt ? s : best)).offset;
     }
 
-    async function request(init) {
-      const mySeq = (seq += 1);
+    // Toda escrita no servidor aumenta a versão, então a mais alta é a mais nova.
+    // Uma leitura que saiu durante uma ação pode voltar com a versão de antes:
+    // ela não pode desfazer a ação na tela. Versão menor só vale se a leitura
+    // saiu depois da última resposta aplicada (estado zerado ou expirado no servidor).
+    function shouldApply(incoming, isRead, sentTick) {
+      if (!incoming) return false;
+      if (!state || incoming.version >= state.version) return true;
+      return isRead && sentTick > lastAppliedTick;
+    }
+
+    async function request(init, isRead) {
       const sentAt = Date.now();
-      const res = await fetch('/api/timer', { cache: 'no-store', ...init });
-      const receivedAt = Date.now();
+      const sentTick = (tick += 1);
+      // Wi-Fi de evento trava conexões: sem limite, o polling pararia em silêncio.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+      let res;
       let data = {};
       try {
-        data = await res.json();
+        res = await fetch('/api/timer', { cache: 'no-store', ...init, signal: controller.signal });
+        try {
+          data = await res.json();
+        } catch {
+          data = {};
+        }
       } catch {
-        data = {};
+        const err = new Error(
+          controller.signal.aborted ? 'O servidor demorou demais pra responder' : 'Sem conexão com o servidor'
+        );
+        err.code = 'network';
+        throw err;
+      } finally {
+        clearTimeout(timeout);
       }
+      const receivedAt = Date.now();
       if (!res.ok) {
         const err = new Error(data.message || 'Falha ao falar com o servidor');
         err.status = res.status;
@@ -100,13 +127,12 @@
         throw err;
       }
       recordClock(data.serverNow, sentAt, receivedAt);
-      // Uma leitura que saiu antes de uma ação e chegou depois não pode desfazer a ação na tela.
-      if (mySeq > appliedSeq) {
-        appliedSeq = mySeq;
+      if (shouldApply(data.state, isRead, sentTick)) {
         state = data.state;
+        lastAppliedTick = tick += 1;
         options.onState(state);
       }
-      return state;
+      return data.state;
     }
 
     function schedule() {
@@ -116,7 +142,7 @@
 
     async function poll() {
       try {
-        await request();
+        await request(undefined, true);
         if (options.onOnline) options.onOnline();
       } catch (err) {
         if (options.onError) options.onError(err);
@@ -127,14 +153,18 @@
 
     return {
       start: poll,
+      refresh: () => request(undefined, true),
       now: () => Date.now() + offset,
       getState: () => state,
       send(payload) {
-        return request({
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
+        return request(
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          },
+          false
+        );
       },
     };
   }

@@ -74,7 +74,10 @@
     flowArrow.hidden = !next;
     nextTitle.hidden = !next;
     setText(nextTitle, next ? `A seguir: ${next.title}` : '');
-    setText(clock, step ? core.formatClock(core.remainingMs(state, now)) : '--:--');
+    const clockText = step ? core.formatClock(core.remainingMs(state, now)) : '--:--';
+    setText(clock, clockText);
+    // "1:02:05" é mais largo que "02:05": diminui pra não estourar a tela.
+    stage.classList.toggle('has-hours', clockText.split(':').length === 3);
 
     stage.classList.toggle('is-warning', phase === 'warning');
     stage.classList.toggle('is-expired', phase === 'expired');
@@ -105,7 +108,8 @@
       wakeStatus.textContent = 'Tela sempre ligada';
       wakeHint.hidden = true;
     } else {
-      wakeStatus.textContent = 'A tela pode apagar';
+      // O próprio botão já avisa; não repete no rodapé.
+      wakeStatus.textContent = '';
       wakeHint.hidden = false;
     }
   }

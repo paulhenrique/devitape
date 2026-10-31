@@ -273,3 +273,86 @@ test('falha do Redis vira 502', async () => {
   assert.equal(res.statusCode, 502);
   clearStoreEnv();
 });
+
+test('JSON malformado no corpo vira 400 (o req.body da Vercel lança erro)', async () => {
+  clearStoreEnv();
+  const handler = freshHandler();
+  const req = { method: 'POST' };
+  Object.defineProperty(req, 'body', {
+    get() {
+      throw new Error('Invalid JSON');
+    },
+  });
+  const res = fakeRes();
+  await handler(req, res);
+  assert.equal(res.statusCode, 400);
+});
+
+test('estado salvo sem campos não derruba a rota', async () => {
+  clearStoreEnv();
+  process.env.KV_REST_API_URL = 'https://fake.upstash.io';
+  process.env.KV_REST_API_TOKEN = 'tok';
+  global.fetch = async () => ({ ok: true, status: 200, json: async () => ({ result: '{"version":3}' }) });
+  const handler = freshHandler();
+  const res = fakeRes();
+  await handler({ method: 'GET' }, res);
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body.state.steps, []);
+  assert.equal(res.body.state.version, 3);
+  clearStoreEnv();
+});
+
+// ---------- Sincronização (createSync) ----------
+
+function deferred() {
+  let resolve;
+  const promise = new Promise((r) => {
+    resolve = r;
+  });
+  return { promise, resolve };
+}
+
+function stateResponse(version) {
+  return {
+    ok: true,
+    status: 200,
+    json: async () => ({ state: { ...initialState(), version }, serverNow: Date.now() }),
+  };
+}
+
+test('leitura que saiu durante uma ação não desfaz a ação na tela', async () => {
+  global.document = { hidden: false };
+  const pending = [];
+  global.fetch = () => {
+    const d = deferred();
+    pending.push(d);
+    return d.promise;
+  };
+  const sync = core.createSync({ onState: () => {} });
+
+  const post = sync.send({ action: 'play' });
+  const read = sync.refresh(); // o servidor respondeu essa leitura antes de gravar o play
+  pending[0].resolve(stateResponse(2));
+  await post;
+  pending[1].resolve(stateResponse(1));
+  await read;
+  assert.equal(sync.getState().version, 2);
+
+  // Uma leitura nova, depois disso, com versão menor (estado zerado/expirado) vale.
+  const later = sync.refresh();
+  pending[2].resolve(stateResponse(0));
+  await later;
+  assert.equal(sync.getState().version, 0);
+  delete global.document;
+});
+
+test('requisição travada desiste depois do tempo limite', async () => {
+  global.document = { hidden: false };
+  global.fetch = (url, init) =>
+    new Promise((resolve, reject) => {
+      init.signal.addEventListener('abort', () => reject(new Error('aborted')));
+    });
+  const sync = core.createSync({ onState: () => {}, timeoutMs: 30 });
+  await assert.rejects(sync.refresh(), /demorou demais/);
+  delete global.document;
+});

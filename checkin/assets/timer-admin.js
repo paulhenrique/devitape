@@ -29,6 +29,8 @@
   // pra o polling não apagar o que está sendo digitado.
   let draft = [];
   let dirty = false;
+  // Conta edições: se a pessoa digitou durante o salvamento, o rascunho continua sujo.
+  let draftRev = 0;
   let lastServerSteps = '';
   let busy = false;
 
@@ -62,7 +64,10 @@
   }
 
   async function send(payload) {
-    if (busy) return null;
+    if (busy) {
+      showToast('Aguarde a ação anterior terminar');
+      return null;
+    }
     busy = true;
     document.body.classList.add('is-busy');
     try {
@@ -157,6 +162,7 @@
   }
 
   function setDirty(value) {
+    if (value) draftRev += 1;
     dirty = value;
     stepsDirty.hidden = !dirty;
     saveSteps.disabled = !dirty;
@@ -188,6 +194,12 @@
       const go = iconButton('▶', 'Ir para esta etapa', () => {
         if (dirty) {
           showToast('Salve o roteiro antes de trocar de etapa');
+          return;
+        }
+        // Ir pra etapa atual zeraria o tempo dela; pra isso existe "Reiniciar etapa".
+        const current = sync.getState();
+        if (current && current.currentIndex === index) {
+          showToast('Essa já é a etapa atual');
           return;
         }
         send({ action: 'goto', index });
@@ -281,12 +293,16 @@
       title: s.title.trim(),
       durationSec: Math.max(1, Math.round(s.minutes * 60)),
     }));
+    const savedRev = draftRev;
     const state = await send({ action: 'setSteps', steps });
-    if (state) {
+    if (!state) return;
+    if (draftRev === savedRev) {
       setDirty(false);
       lastServerSteps = '';
       onState(state);
       showToast('Roteiro salvo');
+    } else {
+      showToast('Roteiro salvo — as últimas edições ainda não foram salvas');
     }
   });
 

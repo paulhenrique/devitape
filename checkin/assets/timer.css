@@ -23,6 +23,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* Se tudo junto (recado + aviso de tempo) não couber, alinha no topo em vez de cortar o título. */
+  justify-content: safe center;
   gap: 2.2vh;
   padding: 5vh 4vw;
   text-align: center;
@@ -75,6 +77,14 @@
 
 .tk-stage.has-message .tk-clock {
   font-size: min(25vw, 36vh);
+}
+
+.tk-stage.has-hours .tk-clock {
+  font-size: min(20vw, 40vh);
+}
+
+.tk-stage.has-hours.has-message .tk-clock {
+  font-size: min(18vw, 32vh);
 }
 
 .tk-stage.is-paused .tk-clock {
@@ -196,6 +206,10 @@
   line-height: 1.15;
   color: #ffffff;
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 @keyframes tk-message-in {
@@ -222,16 +236,16 @@
 
 .tk-wake-hint {
   position: fixed;
-  left: 50%;
-  bottom: 56px;
+  top: 12px;
+  right: 12px;
   z-index: 6;
-  transform: translateX(-50%);
-  padding: 12px 20px;
+  max-width: min(340px, 80vw);
+  padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--accent);
   background: rgba(24, 24, 31, 0.92);
   color: var(--text);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
 }

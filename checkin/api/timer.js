@@ -4,14 +4,22 @@ const { ActionError, initialState, applyAction } = require('./_timer');
 const { StoreNotConfiguredError, StoreError, getJSON, setJSON } = require('./_store');
 
 const STATE_KEY = 'timekeeper:state';
-// Estado é temporário: some sozinho uma semana depois da última mudança.
-const STATE_TTL_SEC = 7 * 24 * 60 * 60;
+// Estado é temporário: some sozinho 30 dias depois da última mudança
+// (folga pra montar o roteiro bem antes do evento).
+const STATE_TTL_SEC = 30 * 24 * 60 * 60;
 
 function readBody(req) {
-  if (req.body && typeof req.body === 'object') return req.body;
-  if (typeof req.body === 'string' && req.body.length) {
+  // Na Vercel, req.body é um getter que lança erro com JSON malformado.
+  let body;
+  try {
+    body = req.body;
+  } catch {
+    return {};
+  }
+  if (body && typeof body === 'object') return body;
+  if (typeof body === 'string' && body.length) {
     try {
-      return JSON.parse(req.body);
+      return JSON.parse(body);
     } catch {
       return {};
     }
@@ -20,7 +28,10 @@ function readBody(req) {
 }
 
 async function loadState() {
-  return (await getJSON(STATE_KEY)) || initialState();
+  const stored = await getJSON(STATE_KEY);
+  const state = { ...initialState(), ...(stored && typeof stored === 'object' ? stored : {}) };
+  if (!Array.isArray(state.steps)) state.steps = [];
+  return state;
 }
 
 module.exports = async function handler(req, res) {
