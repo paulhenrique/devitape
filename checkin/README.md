@@ -15,11 +15,17 @@ Projeto estático (HTML puro) + funções serverless na Vercel, sem framework e 
 - `api/events.js` — `GET` → lista/resolve qual evento é "hoje".
 - `api/checkin.js` — `POST { email, event?, participantId? }`.
 - `api/status.js` — `GET ?event=<id>` → `{ present, total, goal, recent }`.
+- `timer.html` / `timer-admin.html` — timekeeper (tela do apresentador e admin, veja abaixo).
+- `api/timer.js` — `GET` → `{ state, serverNow }`; `POST { action, ... }` muda o cronômetro.
+- `api/_timer.js` (regras do cronômetro) e `api/_store.js` (Redis da Upstash, ou memória local).
 - `vercel.json` — `cleanUrls` (pra `/telao` funcionar sem `.html`).
 
 ## Variáveis de ambiente (só no servidor, nunca commitadas)
 
 - `SYMPLA_TOKEN` — token da API pública da Sympla (header `s_token`). Sempre obrigatória.
+- `KV_REST_API_URL` + `KV_REST_API_TOKEN` (ou `UPSTASH_REDIS_REST_URL` +
+  `UPSTASH_REDIS_REST_TOKEN`) — Redis da Upstash usado só pelo timekeeper.
+  A integração da Vercel cria essas variáveis sozinha (veja abaixo).
 - `SYMPLA_EVENT_ID` — **opcional**. Se definida, o sistema sempre usa esse
   evento fixo (comportamento antigo, sem chamar `/events` da Sympla). Se
   **não** definida, o evento do dia é detectado automaticamente (veja abaixo).
@@ -93,10 +99,42 @@ inferior esquerdo com **"➕ Simular chegada"** (nome aleatório na hora),
 **"🔄 Reiniciar"**. Também aceita `&total=120` pra testar com outra
 capacidade (padrão 80) e `&present=N` pra já começar com N pessoas.
 
+## Timekeeper: `/timer` (apresentador) e `/timer-admin` (organização)
+
+Cronômetro de palco compartilhado entre aparelhos:
+
+- **`/timer-admin`** (sem senha, por enquanto): monta o roteiro (etapa + minutos,
+  reordena, salva), controla ▶ Play / ❚❚ Pausar / Anterior / Próxima / ±1 min /
+  Reiniciar etapa, manda recados pro apresentador (atalhos prontos ou texto livre)
+  e mostra uma **prévia ao vivo** da tela do apresentador.
+- **`/timer`** (deixar aberto pra quem apresenta): só leitura. Mostra
+  "Atividade atual › A seguir: próxima" e o tempo em destaque. No último minuto o
+  número fica amarelo; ao zerar, **continua contando no negativo em vermelho
+  pulsante** com "Atenção, tempo encerrado". Pede ao navegador pra **não apagar a
+  tela** (Screen Wake Lock, o mesmo recurso de sites de vídeo); se o navegador
+  pedir um toque, aparece um botão "toque aqui" que também liga a tela cheia.
+  Recados do admin aparecem em destaque por 60 segundos.
+- Trocar de etapa não avança sozinho: ao estourar, o tempo segue negativo até o
+  admin apertar "Próxima" (a próxima já entra rodando se o relógio estava rodando).
+
+Todo mundo vê o mesmo tempo porque o estado fica num lugar só (Redis) e cada
+tela corrige o próprio relógio pelo horário do servidor. O estado é pequeno e
+temporário: expira sozinho 7 dias depois da última mudança.
+
+**Configurar uma vez na Vercel:** projeto → *Storage* → *Create Database* →
+*Upstash for Redis* (plano grátis) → conectar a este projeto em todos os
+ambientes → *Redeploy*. Sem isso, `/timer-admin` mostra um aviso amarelo e o
+`/api/timer` responde `storage_missing`. Rodando local (`node --test` ou um
+servidor de dev), sem essas variáveis, o estado fica em memória.
+
+> Sem senha, qualquer pessoa que descobrir `/timer-admin` consegue mexer no
+> cronômetro. Se isso virar um problema, dá pra exigir uma chave via variável de
+> ambiente sem mudar o resto.
+
 ## Rodar os testes locais (mock da Sympla)
 
 ```sh
-node --test checkin/test/checkin.test.js
+node --test checkin/test/checkin.test.js checkin/test/timer.test.js
 ```
 
 17 testes cobrem: check-in de participante pendente, participante que já fez

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Tempo — DevItape</title>
+  <meta name="color-scheme" content="dark" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/timer.css" />
+</head>
+<body class="timer-body">
+  <div class="telao-bg" aria-hidden="true">
+    <div class="telao-blob"></div>
+    <div class="telao-blob"></div>
+    <div class="telao-blob"></div>
+    <div class="telao-blob"></div>
+  </div>
+  <div class="tk-red-wash" aria-hidden="true"></div>
+
+  <main class="tk-stage" id="stage">
+    <div class="tk-flow">
+      <span class="tk-current" id="current-title">Carregando…</span>
+      <span class="tk-arrow" id="flow-arrow" aria-hidden="true" hidden>›</span>
+      <span class="tk-upnext" id="next-title" hidden></span>
+    </div>
+
+    <div class="tk-clock" id="clock" role="timer" aria-live="off">--:--</div>
+
+    <p class="tk-status" id="status"></p>
+
+    <div class="tk-expired-banner" id="expired-banner" hidden>Atenção, tempo encerrado</div>
+
+    <div class="tk-message" id="message" role="alert" hidden>
+      <span class="tk-message-label">Recado da organização</span>
+      <span class="tk-message-text" id="message-text"></span>
+    </div>
+  </main>
+
+  <button class="tk-wake-hint" id="wake-hint" type="button" hidden>
+    Toque aqui para tela cheia e para a tela não apagar
+  </button>
+
+  <footer class="tk-foot" id="foot">
+    <span id="wake-status"></span>
+    <span id="conn-status"></span>
+  </footer>
+
+  <script src="/assets/timer-core.js"></script>
+  <script src="/assets/timer-presenter.js"></script>
+</body>
+</html>
